@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import axios from 'axios';
 import './App.css';
+import Datamap from 'datamaps';
 
 class App extends Component {
   constructor() {
