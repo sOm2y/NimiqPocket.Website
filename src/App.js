@@ -229,6 +229,14 @@ class App extends Component {
     this.setState({ activeKey });
   };
 
+  getUserTotalHashrate(devices){
+    let totalHashrate = 0;
+    devices.map(device=>{
+      totalHashrate =+ device.hashrate;
+    });
+    return this.humanHashes(totalHashrate);
+  }
+
   render() {
     const { Header, Content, Footer } = Layout;
 
@@ -406,7 +414,7 @@ class App extends Component {
             <TabPane tab="BALANCE" key={this.state.panes[1].key}>
               {this.state.userBalance && (
                 <Card
-                  title={`Unpaid Balance : ${this.state.userBalance.balance}`}
+                  title={`Unpaid Balance : ${this.state.userBalance.balance*100000}`}
                   bordered={false}
                   style={{ width: '85%' }}
                 >
@@ -416,6 +424,7 @@ class App extends Component {
                     dataSource={this.state.userBalance.activeDevices}
                     loading={this.state.loadingBalance}
                   />
+                  <p>Total Devices: {this.state.userBalance.activeDevices&&this.state.userBalance.activeDevices.length} | Total Hashrate: {this.state.userBalance.activeDevices&&this.getUserTotalHashrate(this.state.userBalance.activeDevices)} </p>
                 </Card>
               )}
             </TabPane>
