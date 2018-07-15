@@ -2,32 +2,115 @@
   text-align: center;
   background: #fafafa;
 }
+.header-logo{
+  position: relative;
+  text-align: left;
+  font-size: 16px;
+  color:#fff;
+  font-weight: 500;
+}
+.ant-row{
+  margin: auto;
+  max-width: 1000px;
+}
+.ant-radio-group{
+  display: block;
+  margin: 0 auto;
+  max-width: 373px;
+}
+.ant-avatar.ant-avatar-circle.ant-avatar-image, .ant-avatar.ant-avatar-circle.ant-avatar-image img{
+  width: 40px;
+  height: 40px;
+}
+.header-stats{
+  color:#fff;
+  padding-bottom: 80px;
+}
+.header-stats span{
+  font-size: 72px;
+}
+p.header-payout {
+  line-height: 1
 
+}
+.wallet-search.ant-btn-circle.ant-btn-lg{
+  width: 60px;
+  font-size: 23px;
+  font-weight: 600;
+  height: 60px;
+  color:var(--primary-color);
+}
+.wallet-search{
+  position: absolute;
+  z-index: 9999;
+  right: 15%;
+  top:-45px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14)
+}
+.header-stats p{
+  font-size: 12px;
+}
+.header-payout span{
+  font-size: 32px;
+}
+.ant-tabs.ant-tabs-top.ant-tabs-line{
+  top: -42px;
+}
+div.ant-tabs-tab-active.ant-tabs-tab{
+  color: white;
+}
+.ant-tabs.ant-tabs-top.ant-tabs-line{
+  padding-bottom:30px;
+}
+
+.ant-tabs-bar{
+  max-width: 1000px;
+  margin: 0 auto;
+  border:0;
+}
+.ant-tabs-nav{
+  color:rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.ant-tabs-ink-bar{
+  background-color: var(--success-color);
+  height: 2px;
+  color:white;
+}
+.ant-card p{
+  font-size: 13px;
+}
+.ant-card p span{
+  font-size: 18px;
+  font-weight: 600;
+}
 .ant-card{
   margin: auto;
-  top: -50px;
+  top: 50px;
   background: white;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
   0 1px 5px 0 rgba(0, 0, 0, 0.12),
   0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  line-height: 2;
+  margin-bottom: 30px;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.ant-card img {
+  width: 100px;
 }
-
 .App-header {
   background: var(--primary-background-toright);
-  height: 250px;
-  padding: 40px;
+  height: 100%;
+  /* padding: 40px; */
   text-align: center;
-
+  padding-bottom: 30px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
   0 1px 5px 0 rgba(0, 0, 0, 0.12),
   0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
-
+.ant-layout-content{
+  position: relative;
+}
 .App-title {
   font-size: 1.5em;
   color: white;
@@ -38,9 +121,13 @@
   font-size: large;
 }
 
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+body{
+  background: #fafafa;
 }
 :root{
   --primary-color: #536dfe; /* YML: #3A3EDD */
@@ -49,5 +136,6 @@
   --primary-background: linear-gradient(var(--primary-color), var(--secondary-color));
   --primary-background-toright: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
   --primary-background-progress: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--secondary-color));
+  --success-color: #64FFDA;
   /* teal-a200 */
 }

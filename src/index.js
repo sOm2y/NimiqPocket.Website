@@ -7,7 +7,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <LocaleProvider locale={zhCN}>
+  <LocaleProvider>
     <App />
   </LocaleProvider>,
   document.getElementById('root')
