@@ -330,8 +330,7 @@ class App extends Component {
             <TabPane tab="BALANCE" key={this.state.panes[1].key}>
               {this.state.userBalance && (
                 <Card
-                  title={`Unpaid Balance : ${this.state.userBalance.balance *
-                    100000} NIM`}
+                  title={`Unpaid Balance : ${this.state.userBalance.balance / 100000} NIM`}
                   bordered={false}
                   style={{ width: '85%' }}
                 >
