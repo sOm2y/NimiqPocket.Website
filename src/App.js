@@ -20,6 +20,8 @@ import {
 import axios from 'axios';
 import './App.css';
 import NetworkStats from './components/networkStats';
+import PoolStats from './components/poolStats';
+import HeaderStats from './components/headerStats';
 
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button;
@@ -112,7 +114,10 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      isLoading: true,
+      isHeaderLoading: true,
+      isUSloading: true,
+      isKRloading: true,
+      isHKloading: true,
       pool: {},
       hk: {},
       kr: {},
@@ -120,34 +125,45 @@ class App extends Component {
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
-      loadingBalance: null,
+      loadingBalance: false,
       activeKey: panes[0].key,
       panes
     };
   }
   async componentDidMount() {
     try {
-      const [us] = await Promise.all([
-        axios.get('https://pool.nimiqpocket.com:8444/')
-      ]);
-      const [hk] = await Promise.all([
-        axios.get('https://hk.nimiqpocket.com:8444/')
-      ]);
-      const [kr] = await Promise.all([
-        axios.get('https://kr.nimiqpocket.com:8444/')
-      ]);
+      const walletAddress = localStorage.getItem('walletAddress');
+      if (walletAddress) this.fetchBalance(walletAddress);
+      axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
+        this.setState({
+          hk: hk.data,
+
+          isHKloading: false
+        });
+      });
+      axios.get('https://kr.nimiqpocket.com:8444/').then(kr => {
+        this.setState({
+          kr: kr.data,
+
+          isKRloading: false
+        });
+      });
+      axios.get('https://pool.nimiqpocket.com:8444/').then(pool => {
+        this.setState({
+          pool: pool.data,
+
+          isUSloading: false
+        });
+      });
+
       const [poolStats] = await Promise.all([
         axios.get('https://kr.nimiqpocket.com:5656/api/poolstats')
       ]);
 
-      const walletAddress = localStorage.getItem('walletAddress');
-      this.fetchBalance(walletAddress);
+
       this.setState({
-        pool: us.data,
-        hk: hk.data,
-        kr: kr.data,
         poolStats: poolStats.data,
-        isLoading: false,
+        isHeaderLoading: false,
         currentListVersion: data.linuxData
       });
     } catch (e) {
@@ -185,14 +201,15 @@ class App extends Component {
         );
         this.setState({
           isBalanceModalOpen: false,
-          userBalance: res.data,
-          loadingBalance: false
+          loadingBalance: false,
+
+          userBalance: res.data
         });
+        localStorage.setItem('walletAddress', address);
       })
       .catch(err => {
         console.log(err);
       });
-    localStorage.setItem('walletAddress', address);
   };
 
   closeBalanceModal = e => {
@@ -229,10 +246,10 @@ class App extends Component {
     this.setState({ activeKey });
   };
 
-  getUserTotalHashrate(devices){
+  getUserTotalHashrate(devices) {
     let totalHashrate = 0;
-    devices.map(device=>{
-      totalHashrate =+ device.hashrate;
+    devices.map(device => {
+      totalHashrate = +device.hashrate;
     });
     return this.humanHashes(totalHashrate);
   }
@@ -240,51 +257,13 @@ class App extends Component {
   render() {
     const { Header, Content, Footer } = Layout;
 
-    // if (this.state.isLoading) {
-    //   return (
-    //     <Layout className="layout">
-    //       <Spin />
-    //     </Layout>
-    //   );
-    // }
-
     return (
       <Layout className="layout">
-        <Header className="App-header">
-          <div className="header-logo">
-            <img
-              style={{ boxShadow: '4px 5px rgba(0,0,0,0.1)', marginRight: 5 }}
-              width="30"
-              height="30"
-              src={require('./assets/nimiq_pokedex_logo.png')}
-              alt=""
-            />{' '}
-            NIMIQ POCKET <sup>BETA</sup>
-          </div>
-          <div className="header-stats">
-            <p>
-              <span>
-                {' '}
-                {this.humanHashes(this.state.poolStats.totalHashrate)}{' '}
-              </span>
-            </p>
-            <p>
-              FEE <span> {this.state.hk.poolFee} </span>% | FOUND<span>
-                {' '}
-                {this.state.poolStats.totalBlocksMined}{' '}
-              </span>
-              BLOCKS
-            </p>
-
-            <p className="header-payout">
-              Auto Payout: Every <span>1 </span> hour for confirmed balance over{' '}
-              <span>10 </span> NIM
-            </p>
-            <p className="header-payout">
-              Pool Address: {this.state.hk.poolAddress}
-            </p>
-          </div>
-        </Header>
+        <HeaderStats
+          isHeaderLoading={this.state.isHeaderLoading}
+          hk={this.state.hk}
+          poolStats={this.state.poolStats}
+        />
         <Content style={{ padding: '0 50px' }}>
           <Tooltip title="Click to type your wallet address">
             <Button
@@ -317,94 +296,31 @@ class App extends Component {
             <TabPane tab="DASHBOARD" key={this.state.panes[0].key}>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <Card
-                    title={`HONG KONG`}
-                    extra={
-                      <img
-                        alt=""
-                        src={require('./assets/if_CN_167778.png')}
-                        style={{ width: 20, padding: '16 0' }}
-                      />
-                    }
-                    bordered={false}
-                    style={{ width: '90%' }}
-                  >
-                    <p>
-                      {' '}
-                      <span>
-                        {this.state.hk.poolName}:{this.state.hk.poolPort}
-                      </span>
-                    </p>
-                    <p>
-                      HashRate:{' '}
-                      <span> {this.humanHashes(this.state.hk.hashRate)} </span>{' '}
-                    </p>
-                    <p>
-                      Number Miners : <span>{this.state.hk.numClients} </span>
-                    </p>
-                    <img alt="" src={require('./assets/azure.png')} />
-                  </Card>
+                  <PoolStats
+                    loading={this.state.isHKloading}
+                    title="HONG KONG"
+                    flag={require('./assets/if_CN_167778.png')}
+                    pool={this.state.hk}
+                    poweredBy={require('./assets/azure.png')}
+                  />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <Card
-                    title={`SOUTH KOREA`}
-                    extra={
-                      <img
-                        alt=""
-                        src={require('./assets/if_Korea-South_298472.png')}
-                        style={{ width: 20, padding: '16 0' }}
-                      />
-                    }
-                    bordered={false}
-                    style={{ width: '90%' }}
-                  >
-                    <p>
-                      {' '}
-                      <span>
-                        {this.state.kr.poolName}:{this.state.kr.poolPort}
-                      </span>
-                    </p>
-                    <p>
-                      HashRate:{' '}
-                      <span> {this.humanHashes(this.state.kr.hashRate)} </span>{' '}
-                    </p>
-                    <p>
-                      Number Miners : <span>{this.state.kr.numClients} </span>
-                    </p>
-                    <img alt="" src={require('./assets/azure.png')} />
-                  </Card>
+                  <PoolStats
+                    loading={this.state.isKRloading}
+                    title="SOUTH KOREA"
+                    flag={require('./assets/if_Korea-South_298472.png')}
+                    pool={this.state.kr}
+                    poweredBy={require('./assets/azure.png')}
+                  />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <Card
-                    title={`WEST US`}
-                    extra={
-                      <img
-                        alt=""
-                        src={require('./assets/if_US_167805.png')}
-                        style={{ width: 20, padding: '16 0' }}
-                      />
-                    }
-                    bordered={false}
-                    style={{ width: '90%' }}
-                  >
-                    <p>
-                      {' '}
-                      <span>
-                        {this.state.pool.poolName}:{this.state.pool.poolPort}
-                      </span>
-                    </p>
-                    <p>
-                      HashRate:{' '}
-                      <span>
-                        {' '}
-                        {this.humanHashes(this.state.pool.hashRate)}{' '}
-                      </span>{' '}
-                    </p>
-                    <p>
-                      Number Miners : <span>{this.state.pool.numClients} </span>
-                    </p>
-                    <img alt="" src={require('./assets/do.png')} />
-                  </Card>
+                  <PoolStats
+                    loading={this.state.isUSloading}
+                    title="WEST US"
+                    flag={require('./assets/if_US_167805.png')}
+                    pool={this.state.pool}
+                    poweredBy={require('./assets/do.png')}
+                  />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <NetworkStats />
@@ -414,7 +330,8 @@ class App extends Component {
             <TabPane tab="BALANCE" key={this.state.panes[1].key}>
               {this.state.userBalance && (
                 <Card
-                  title={`Unpaid Balance : ${this.state.userBalance.balance*100000}`}
+                  title={`Unpaid Balance : ${this.state.userBalance.balance *
+                    100000} NIM`}
                   bordered={false}
                   style={{ width: '85%' }}
                 >
@@ -424,7 +341,16 @@ class App extends Component {
                     dataSource={this.state.userBalance.activeDevices}
                     loading={this.state.loadingBalance}
                   />
-                  <p>Total Devices: {this.state.userBalance.activeDevices&&this.state.userBalance.activeDevices.length} | Total Hashrate: {this.state.userBalance.activeDevices&&this.getUserTotalHashrate(this.state.userBalance.activeDevices)} </p>
+                  <p>
+                    Total Devices:{' '}
+                    {this.state.userBalance.activeDevices &&
+                      this.state.userBalance.totalActiveDevices}{' '}
+                    | Total Hashrate:{' '}
+                    {this.state.userBalance.activeDevices &&
+                      this.humanHashes(
+                        this.state.userBalance.totalActiveDevicesHashrate
+                      )}{' '}
+                  </p>
                 </Card>
               )}
             </TabPane>

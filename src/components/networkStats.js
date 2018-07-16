@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Card } from 'antd';
+import { Card, Spin, Icon } from 'antd';
 import axios from 'axios';
-import {humanHashes} from '../Helper/statsFormat';
+import { humanHashes } from '../Helper/statsFormat';
 export default class NetworkStats extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +25,25 @@ export default class NetworkStats extends Component {
     }
   }
   render() {
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
+    if (this.state.isNetworkStatsLoading)
+      return (
+        <Card
+          title="Nimiq network stats"
+          extra={
+            <img
+              alt=""
+              // src={require('./assets/if_Korea-South_298472.png')}
+              style={{ width: 20, padding: '16 0' }}
+            />
+          }
+          bordered={false}
+          style={{ width: '90%' }}
+        >
+           <Spin indicator={antIcon} />
+        </Card>
+      );
     return (
       <Card
         title="Nimiq network stats"
@@ -40,10 +59,7 @@ export default class NetworkStats extends Component {
       >
         <p>
           HashRate:{' '}
-          <span>
-            {' '}
-            {humanHashes(this.state.networkStats.hashrate)}{' '}
-          </span>{' '}
+          <span> {humanHashes(this.state.networkStats.hashrate)} </span>{' '}
         </p>
         <p>
           Height : <span>{this.state.networkStats.height} </span>
@@ -52,7 +68,7 @@ export default class NetworkStats extends Component {
           Difficulty : <span>{this.state.networkStats.difficulty} </span>
         </p>
         <p>
-         1KH/s: <span>{this.state.networkStats.nim_day_kh} </span>per day
+          1KH/s: <span>{this.state.networkStats.nim_day_kh} </span>per day
         </p>
       </Card>
     );
