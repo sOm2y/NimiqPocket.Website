@@ -442,18 +442,16 @@ Use $ chmod 755 miner if you experience permission issue
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           <Row>
-            Join our channels{' '}
-            <a href="tencent://message/?uin=649287531" target="_blank">
-              <Icon style={{ fontSize: 20 }} type="qq" />649287531
-            </a>{' '}
-            |{' '}
+            Join our channels: {' '}
+            <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=9fbcea0108f94f02aa4633e9fdd651a4f36807eb804db57029c26a5e87cafc79"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Nimiq口袋" title="Nimiq口袋 649287531" /></a>
+      
             <a href="https://discord.gg/qZZMtrK" target="_blank">
               <img
-                width="26"
-                height="26"
-                src={require('./assets/discord-new-logo.png')}
-                alt=""
-              />Discord
+                width="100"
+                height="34"
+                src={require('./assets/Discord-Logo+Wordmark-Color.png')}
+                alt="Discord"
+              />
             </a>{' '}
           </Row>
           <Row>
