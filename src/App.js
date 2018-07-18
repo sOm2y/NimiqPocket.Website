@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { translate, Trans } from 'react-i18next';
 import {
   Button,
   Spin,
@@ -256,7 +256,11 @@ class App extends Component {
 
   render() {
     const { Header, Content, Footer } = Layout;
+    const { t, i18n } = this.props;
 
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+    }
     return (
       <Layout className="layout">
         <HeaderStats
@@ -469,4 +473,4 @@ Use $ chmod 755 miner if you experience permission issue
   }
 }
 
-export default App;
+export default translate('translations')(App);;
