@@ -15,21 +15,34 @@ import {
   Modal,
   Input,
   Table,
-  Icon
+  Icon,
+  Collapse
 } from 'antd';
 import axios from 'axios';
 import './App.css';
 import NetworkStats from './components/networkStats';
 import PoolStats from './components/poolStats';
 import HeaderStats from './components/headerStats';
+import Balance from './components/balance';
 
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
+const Panel = Collapse.Panel;
+
+
+const customPanelStyle = {
+  background: '#f7f7f7',
+  borderRadius: 4,
+  marginBottom: 24,
+  border: 0,
+  overflow: 'hidden',
+};
+
 const data = {
-  linuxData: [
-    {
+  linuxData: {
+    intel: [{
       title: 'Linux binary beta client - Skylake',
       version: 'version 0.2.0',
       link: '/nimiqpocket-miner-linux-skylake-en.zip',
@@ -65,7 +78,16 @@ const data = {
       link: '/nimiqpocket-miner-linux-ivybridge-zh.zip',
       logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
     }
-  ],
+    ],
+    ryzen: [
+      {
+        title: 'Coming soon',
+        // version: 'version 0.2.0',
+        // link: '/nimiqpocket-miner-linux-skylake-en.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      }
+    ]
+  },
   macData: [
     {
       title: 'Mac binary beta client',
@@ -96,25 +118,12 @@ const data = {
   ]
 };
 
-const walletAddressColumn = [
-  {
-    title: 'DeviceId',
-    dataIndex: 'activeDeviceId',
-    key: 'activeDeviceId'
-  },
-  {
-    title: 'Hashrate',
-    dataIndex: 'hashrate'
-  }
-];
-
 const panes = [{ key: '1' }, { key: '2' }, { key: '3' }, { key: '4' }];
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      isHeaderLoading: true,
       isUSloading: true,
       isKRloading: true,
       isHKloading: true,
@@ -156,14 +165,7 @@ class App extends Component {
         });
       });
 
-      const [poolStats] = await Promise.all([
-        axios.get('https://kr.nimiqpocket.com:5656/api/poolstats')
-      ]);
-
-
       this.setState({
-        poolStats: poolStats.data,
-        isHeaderLoading: false,
         currentListVersion: data.linuxData
       });
     } catch (e) {
@@ -194,7 +196,7 @@ class App extends Component {
       loadingBalance: true
     });
     axios
-      .get(`https://kr.nimiqpocket.com:5656/api/balance/${address}`)
+      .get(`https://hk.nimiqpocket.com:5656/api/balance/${address}`)
       .then(res => {
         res.data.activeDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))
@@ -264,9 +266,7 @@ class App extends Component {
     return (
       <Layout className="layout">
         <HeaderStats
-          isHeaderLoading={this.state.isHeaderLoading}
           hk={this.state.hk}
-          poolStats={this.state.poolStats}
         />
         <Content style={{ padding: '0 50px' }}>
           <Tooltip title="Click to type your wallet address">
@@ -297,12 +297,12 @@ class App extends Component {
             />
           </Modal>
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
-            <TabPane tab="DASHBOARD" key={this.state.panes[0].key}>
+            <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isHKloading}
-                    title="HONG KONG"
+                    title={t('dashboard.hk')}
                     flag={require('./assets/if_CN_167778.png')}
                     pool={this.state.hk}
                     poweredBy={require('./assets/azure.png')}
@@ -311,7 +311,7 @@ class App extends Component {
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isKRloading}
-                    title="SOUTH KOREA"
+                    title={t('dashboard.sk')}
                     flag={require('./assets/if_Korea-South_298472.png')}
                     pool={this.state.kr}
                     poweredBy={require('./assets/azure.png')}
@@ -320,7 +320,7 @@ class App extends Component {
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isUSloading}
-                    title="WEST US"
+                    title={t('dashboard.us_w')}
                     flag={require('./assets/if_US_167805.png')}
                     pool={this.state.pool}
                     poweredBy={require('./assets/do.png')}
@@ -331,33 +331,12 @@ class App extends Component {
                 </Col>
               </Row>
             </TabPane>
-            <TabPane tab="BALANCE" key={this.state.panes[1].key}>
+            <TabPane tab={t('balance.title')} key={this.state.panes[1].key}>
               {this.state.userBalance && (
-                <Card
-                  title={`Unpaid Balance : ${this.state.userBalance.balance / 100000} NIM`}
-                  bordered={false}
-                  style={{ width: '85%' }}
-                >
-                  <Table
-                    rowKey={record => record.activeDeviceId}
-                    columns={walletAddressColumn}
-                    dataSource={this.state.userBalance.activeDevices}
-                    loading={this.state.loadingBalance}
-                  />
-                  <p>
-                    Total Devices:{' '}
-                    {this.state.userBalance.activeDevices &&
-                      this.state.userBalance.totalActiveDevices}{' '}
-                    | Total Hashrate:{' '}
-                    {this.state.userBalance.activeDevices &&
-                      this.humanHashes(
-                        this.state.userBalance.totalActiveDevicesHashrate
-                      )}{' '}
-                  </p>
-                </Card>
+                <Balance userBalance={this.state.userBalance} loadingBalance={this.state.loadingBalance} />
               )}
             </TabPane>
-            <TabPane tab="CONNECT" key={this.state.panes[2].key}>
+            <TabPane tab={t('connect.title')} key={this.state.panes[2].key}>
               <Card
                 title="NIMIQPOCKET BINARY MINER"
                 bordered={false}
@@ -375,29 +354,88 @@ class App extends Component {
                   <RadioButton value="android">Android</RadioButton>
                 </RadioGroup>
 
-                <List
-                  size="large"
-                  dataSource={this.state.currentListVersion}
-                  renderItem={item => (
-                    <List.Item
-                      actions={[
-                        item.link && (
-                          <a href={item.link} target="_blank" download>
-                            {' '}
-                            <Button type="primary">Download</Button>
-                          </a>
-                        )
-                      ]}
-                    >
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.logo} />}
-                        title={item.title}
-                        description={item.version}
-                      />
-                    </List.Item>
-                  )}
-                />
+                {this.state.currentListVersion.intel && <Collapse bordered={false}>
+                  <Panel header={<img
+                    src={require('./assets/intel-logo-transparent.png')}
+                  />} key="1" style={customPanelStyle}>
+                    <List
+                      size="large"
+                      dataSource={this.state.currentListVersion.intel}
+                      renderItem={item => (
+                        <List.Item
+                          actions={[
+                            item.link && (
+                              <a href={item.link} target="_blank" download>
+                                {' '}
+                                <Button type="primary">Download</Button>
+                              </a>
+                            )
+                          ]}
+                        >
+                          <List.Item.Meta
+                            avatar={<Avatar src={item.logo} />}
+                            title={item.title}
+                            description={item.version}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </Panel>
+                  <Panel className="ryzen" header={<img
+                    src={require('./assets/ryzen-logo-300x150.png')}
+                  />} key="2" style={customPanelStyle}>
+                    <List
+                      size="large"
+                      dataSource={this.state.currentListVersion.ryzen}
+                      renderItem={item => (
+                        <List.Item
+                          actions={[
+                            item.link && (
+                              <a href={item.link} target="_blank" download>
+                                {' '}
+                                <Button type="primary">Download</Button>
+                              </a>
+                            )
+                          ]}
+                        >
+                          <List.Item.Meta
+                            avatar={<Avatar src={item.logo} />}
+                            title={item.title}
+                            description={item.version}
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </Panel>
+
+                </Collapse>
+                }
+                {!this.state.currentListVersion.intel &&
+                  <List
+                    size="large"
+                    dataSource={this.state.currentListVersion}
+                    renderItem={item => (
+                      <List.Item
+                        actions={[
+                          item.link && (
+                            <a href={item.link} target="_blank" download>
+                              {' '}
+                              <Button type="primary">Download</Button>
+                            </a>
+                          )
+                        ]}
+                      >
+                        <List.Item.Meta
+                          avatar={<Avatar src={item.logo} />}
+                          title={item.title}
+                          description={item.version}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                }
               </Card>
+
 
               <Card
                 title="CONNECT WITH OFFICAL NODEJS MINER"
@@ -438,7 +476,7 @@ Use $ chmod 755 miner if you experience permission issue
                 </a>
               </Card>
             </TabPane>
-            <TabPane tab="FAQ" key={this.state.panes[3].key}>
+            <TabPane tab={t('faq.title')} key={this.state.panes[3].key}>
               Coming Soon
             </TabPane>
           </Tabs>
@@ -447,7 +485,7 @@ Use $ chmod 755 miner if you experience permission issue
           <Row>
             Join our channels: {' '}
             <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=9fbcea0108f94f02aa4633e9fdd651a4f36807eb804db57029c26a5e87cafc79"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Nimiq口袋" title="Nimiq口袋 649287531" /></a>
-      
+
             <a href="https://discord.gg/qZZMtrK" target="_blank">
               <img
                 width="100"
@@ -458,14 +496,11 @@ Use $ chmod 755 miner if you experience permission issue
             </a>{' '}
           </Row>
           <Row>
-            Nimiq Pocket ©2018 | Stats Powered by{' '}
-            <a href="https://api.nimiqx.com/" target="_blank">
+            Nimiq Pocket ©2018 | Powered by{' '} the   <a href="https://api.nimiqx.com/" target="_blank">Nimiq</a> Blockchain
+            {/* <a href="https://api.nimiqx.com/" target="_blank">
               NimiqX
-            </a>{' '}
-            | Created by Master Do{' '}
-            <a href="https://github.com/som2y" target="_blank">
-              <Icon style={{ fontSize: 18 }} type="github" />
-            </a>
+            </a>{' '} */}
+
           </Row>
         </Footer>
       </Layout>
@@ -473,4 +508,4 @@ Use $ chmod 755 miner if you experience permission issue
   }
 }
 
-export default translate('translations')(App);;
+export default translate('translations')(App);

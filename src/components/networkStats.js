@@ -1,43 +1,45 @@
 import React, { Component } from 'react';
 import { Card, Spin, Icon } from 'antd';
+import { translate, Trans } from 'react-i18next';
 import axios from 'axios';
 import { humanHashes } from '../Helper/statsFormat';
-export default class NetworkStats extends Component {
+class NetworkStats extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isNetworkStatsLoading: true,
-      networkStats: {}
+      networkStats: {},
+      price:{}
     };
   }
   async componentDidMount() {
     try {
-      const [networkStats] = await Promise.all([
-        axios.get('https://kr.nimiqpocket.com:5656/api/networkstats')
+      const [networkStats, price] = await Promise.all([
+        axios.get('https://kr.nimiqpocket.com:5656/api/networkstats'),
+        axios.get('https://kr.nimiqpocket.com:5656/api/price')
       ]);
 
       this.setState({
         isNetworkStatsLoading: false,
-        networkStats: networkStats.data
+        networkStats: networkStats.data,
+        price: price.data
       });
     } catch (e) {
       console.log(e);
     }
   }
   render() {
+    const { t, i18n } = this.props;
+
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+    }
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
     if (this.state.isNetworkStatsLoading)
       return (
         <Card
-          title="Nimiq network stats"
-          extra={
-            <img
-              alt=""
-              // src={require('./assets/if_Korea-South_298472.png')}
-              style={{ width: 20, padding: '16 0' }}
-            />
-          }
+          title={t('dashboard.network.title')}
           bordered={false}
           style={{ width: '90%' }}
         >
@@ -46,31 +48,30 @@ export default class NetworkStats extends Component {
       );
     return (
       <Card
-        title="Nimiq network stats"
-        extra={
-          <img
-            alt=""
-            // src={require('./assets/if_Korea-South_298472.png')}
-            style={{ width: 20, padding: '16 0' }}
-          />
-        }
+        title=  {t('dashboard.network.title')}
+        extra={<p>Power by <a href="https://api.nimiqx.com/">nimiqX</a></p>}
         bordered={false}
         style={{ width: '90%' }}
+        className='network-stats'
       >
         <p>
-          HashRate:{' '}
+        {t('dashboard.hashrate')} :{' '}
           <span> {humanHashes(this.state.networkStats.hashrate)} </span>{' '}
         </p>
         <p>
-          Height : <span>{this.state.networkStats.height} </span>
+        {t('dashboard.network.height')} : <span>{this.state.networkStats.height} </span>
         </p>
         <p>
-          Difficulty : <span>{this.state.networkStats.difficulty} </span>
+        {t('dashboard.network.difficulty')} : <span>{this.state.networkStats.difficulty} </span>
         </p>
         <p>
-          1KH/s: <span>{this.state.networkStats.nim_day_kh} </span>per day
+          1KH/s: <span>{this.state.networkStats.nim_day_kh} NIM </span>  {t('dashboard.network.per_day')} 
+        </p>
+        <p>
+          {t('dashboard.network.price.title')}:  {t('dashboard.network.price.btc')} <span>{this.state.price.btc}</span> /   {t('dashboard.network.price.usd')} <span>{this.state.price.usd}</span>
         </p>
       </Card>
     );
   }
 }
+export default translate('translations')(NetworkStats);

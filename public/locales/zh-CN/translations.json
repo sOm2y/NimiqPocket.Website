@@ -1,7 +1,41 @@
 {
-    "title": "自动收益",
-    "description": {
-      "part1": "To get started, edit <1>src/App.js</1> and save to reload.",
-      "part2": "Switch language between english and german using buttons above."
+    "header": {
+      "fee": "矿池费用",
+      "found": "找到",
+      "block": "块数",
+      "auto_payout":"自动收益: 每 <span>1 </span> 小时一次收益，如果收益超过",
+      "pool_address":"矿池地址"
+    },
+    "dashboard":{
+      "title":"首页",
+      "hk":"香港",
+      "sk":"韩国",
+      "us_w":"美国西部",
+      "hashrate":"哈希率",
+      "numClients": "矿机数量",
+      "network":{
+        "title":"Nimiq主网",
+        "height":"高度",
+        "difficulty":"难度",
+        "per_day":" 每天",
+        "price":{
+          "title":"交易价",
+          "btc":"比特币",
+          "usd":"美元"
+  
+        }
+      }
+    },
+    "balance":{
+      "title":"余额查询",
+      "unpaid":"余额",
+      "devices":"矿机总数",
+      "total_hashrate":"总哈希率"
+    },
+    "connect":{
+      "title":"下载"
+    },
+    "faq":{
+      "title":"常见问题"
     }
   }

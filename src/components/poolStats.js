@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Card, Spin, Icon } from 'antd';
 import axios from 'axios';
+import { translate, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
-export default class PoolStats extends Component {
+class PoolStats extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   async componentDidMount() {}
   render() {
+    const { t, i18n } = this.props;
+
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+    }
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
     if (this.props.loading)
       return (
@@ -47,13 +53,14 @@ export default class PoolStats extends Component {
           </span>
         </p>
         <p>
-          HashRate: <span> {humanHashes(this.props.pool.hashRate)} </span>{' '}
+        {t('dashboard.hashrate')} : <span> {humanHashes(this.props.pool.hashRate)} </span>{' '}
         </p>
         <p>
-          Number Miners : <span>{this.props.pool.numClients} </span>
+        {t('dashboard.numClients')} : <span>{this.props.pool.numClients} </span>
         </p>
         <img alt="" src={this.props.poweredBy} />
       </Card>
     );
   }
 }
+export default translate('translations')(PoolStats);

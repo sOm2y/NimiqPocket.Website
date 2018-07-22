@@ -1,7 +1,41 @@
 {
-    "title": "Welcome to react using react-i18next",
-    "description": {
-      "part1": "To get started, edit <1>src/App.js</1> and save to reload.",
-      "part2": "Switch language between english and german using buttons above."
+  "header": {
+    "fee": "fee",
+    "found": "found",
+    "block": "block",
+    "auto_payout":"Auto Payout: Every <span>1 </span> hour for confirmed balance over ",
+    "pool_address":"pool address"
+  },
+  "dashboard":{
+    "title":"DASHBOARD",
+    "hk":"HONG KONG",
+    "sk":"SOUTH KOREA",
+    "us_w":"WEST US",
+    "hashrate":"Hashrate",
+    "numClients": "Number of Miners",
+    "network":{
+      "title":"Nimiq network stats",
+      "height":"Height",
+      "difficulty":"Difficulty",
+      "per_day":" per day",
+      "price":{
+        "title":"Market Price",
+        "btc":"BTC",
+        "usd":"USD"
+
+      }
     }
+  },
+  "balance":{
+    "title":"BALANCE",
+    "unpaid":"Unpaid Balance",
+    "devices":"Total Devices",
+    "total_hashrate":"Total Hashrate"
+  },
+  "connect":{
+    "title":"CONNECT"
+  },
+  "faq":{
+    "title":"FAQ"
   }
+}

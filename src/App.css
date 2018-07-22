@@ -18,9 +18,19 @@
   margin: 0 auto;
   max-width: 373px;
 }
+.ant-card.network-stats p{
+  margin-bottom: 0;
+}
 .ant-avatar.ant-avatar-circle.ant-avatar-image, .ant-avatar.ant-avatar-circle.ant-avatar-image img{
   width: 40px;
   height: 40px;
+}
+.ant-collapse.ant-collapse-borderless{
+  margin-top: 30px;
+}
+.ant-card .ant-collapse-header img{
+  width: 50px;
+  height: 28px;
 }
 .header-stats{
   color:#fff;
@@ -110,6 +120,20 @@ div.ant-tabs-tab-active.ant-tabs-tab{
 }
 .ant-layout-content{
   position: relative;
+}
+.header-lang{
+  width:70px;
+  position: absolute;
+  top:15px;
+  right: 10px;
+}
+.header-lang .ant-select-selection{
+  background: transparent;
+  color: white;
+  border: 0;
+}
+.ant-select-arrow{
+  color:white;
 }
 .App-title {
   font-size: 1.5em;

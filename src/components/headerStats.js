@@ -1,19 +1,31 @@
 import React, { Component } from 'react';
-import { Icon, Spin, Layout } from 'antd';
+import { Icon, Spin, Layout, Select } from 'antd';
 import axios from 'axios';
 import { humanHashes } from '../Helper/statsFormat';
 import { translate, Trans } from 'react-i18next';
+const Option = Select.Option;
+
 class HeaderStats extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { poolStats: {}, isHeaderLoading: true };
   }
-  async componentDidMount() {}
+  async componentDidMount() {
+    const [poolStats] = await Promise.all([
+      axios.get('https://hk.nimiqpocket.com:5656/api/poolstats')
+    ]);
+    this.setState({
+      isHeaderLoading: false,
+      poolStats: poolStats.data,
+    });
+  }
+
   render() {
     const { t, i18n } = this.props;
 
-    const changeLanguage = (lng) => {
-      i18n.changeLanguage(lng);
+
+    const handleLangChange = (value) => {
+      i18n.changeLanguage(value);
     }
     const { Header } = Layout;
     const antIcon = (
@@ -21,8 +33,20 @@ class HeaderStats extends Component {
     );
     return (
       <Header className="App-header">
-        <button onClick={() => changeLanguage('zh-CN')}>zh</button>
-          <button onClick={() => changeLanguage('en')}>en</button>
+        <Select className="header-lang" defaultValue={localStorage.getItem('i18nextLng') ? localStorage.getItem('i18nextLng') : 'en'} onChange={handleLangChange}>
+          <Option value="zh-CN">
+            <img
+              alt=""
+              src={require('../assets/china.png')}
+              style={{ width: 30 }}
+            /></Option>
+          <Option value="en">
+            <img
+              alt=""
+              src={require('../assets//united-kingdom.png')}
+              style={{ width: 30 }}
+            /></Option>
+        </Select>
         <div className="header-logo">
           <img
             style={{ boxShadow: '4px 5px rgba(0,0,0,0.1)', marginRight: 5 }}
@@ -34,27 +58,31 @@ class HeaderStats extends Component {
           NIMIQ POCKET <sup>BETA</sup>
         </div>
         <div className="header-stats">
-          {this.props.isHeaderLoading ? (
+          {this.state.isHeaderLoading ? (
             <Spin indicator={antIcon} />
           ) : (
+              <p>
+                <span> {humanHashes(this.state.poolStats.totalHashrate)}</span>
+              </p>
+            )}
+          {!this.state.isHeaderLoading && (
             <p>
-              <span> {humanHashes(this.props.poolStats.totalHashrate)}</span>
-            </p>
-          )}
-          {!this.props.isHeaderLoading && (
-            <p>
-              FEE <span> {this.props.hk.poolFee} </span>% | FOUND{' '}
-              <span>{this.props.poolStats.totalBlocksMined}</span>
-              BLOCKS
+
+              {t('header.fee')} <span> {this.props.hk.poolFee} </span>% |   {t('header.found')}{' '}
+              <span>{this.state.poolStats.totalBlocksMined}</span>
+              {t('header.block')}
             </p>
           )}{' '}
+
           <p className="header-payout">
-          {t('title')}
-            Auto Payout: Every <span>1 </span> hour for confirmed balance over{' '}
+            <Trans i18nKey="header.auto_payout">
+              Auto Payout: Every <span>1 </span> hour for confirmed balance over
+            </Trans>
             <span>10 </span> NIM
           </p>
+
           <p className="header-payout">
-            Pool Address: {this.props.hk.poolAddress}
+            {t('header.pool_address')}: {this.props.hk.poolAddress}
           </p>
         </div>
       </Header>
