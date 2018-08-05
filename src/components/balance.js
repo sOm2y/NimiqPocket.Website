@@ -10,18 +10,17 @@ class Balance extends Component {
   }
   async componentDidMount() {}
   render() {
-      
     const walletAddressColumn = [
-        {
-        title: 'DeviceId',
-        dataIndex: 'activeDeviceId',
-        key: 'activeDeviceId'
-        },
-        {
-        title: 'Hashrate',
-        dataIndex: 'hashrate'
-        }
-    ];
+      {
+      title: 'DeviceId',
+      dataIndex: 'activeDeviceId',
+      key: 'activeDeviceId'
+      },
+      {
+      title: 'Hashrate',
+      dataIndex: 'hashrate'
+      }
+  ];
   
     const { t, i18n } = this.props;
 

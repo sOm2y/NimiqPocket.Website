@@ -14,9 +14,12 @@ import {
   Tooltip,
   Modal,
   Input,
-  Table,
+  Drawer,
   Icon,
-  Collapse
+  Form,
+  Collapse,
+  Select,
+  notification
 } from 'antd';
 import axios from 'axios';
 import './App.css';
@@ -24,66 +27,84 @@ import NetworkStats from './components/networkStats';
 import PoolStats from './components/poolStats';
 import HeaderStats from './components/headerStats';
 import Balance from './components/balance';
+import Blocks from './components/blocks';
+import WebMiner from './components/webMiner';
+import CustomFooter from './components/customFooter';
+import Faq from './components/faq';
 
+const { Option } = Select;
 const TabPane = Tabs.TabPane;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
 const Panel = Collapse.Panel;
 
-
 const customPanelStyle = {
   background: '#f7f7f7',
   borderRadius: 4,
   marginBottom: 24,
   border: 0,
-  overflow: 'hidden',
+  overflow: 'hidden'
 };
 
 const data = {
   linuxData: {
-    intel: [{
-      title: 'Linux binary beta client - Skylake',
-      version: 'version 0.2.0',
-      link: '/nimiqpocket-miner-linux-skylake-en.zip',
-      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    },
-    {
-      title: 'Linux binary beta client - SandyBridge',
-      version: 'version 0.2.0',
-      link: '/nimiqpocket-miner-linux-sandybridge-en.zip',
-      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    },
-    {
-      title: 'Linux binary beta client - IvyBridge',
-      version: 'version 0.2.0',
-      link: '/nimiqpocket-miner-linux-ivybridge-en.zip',
-      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    },
-    {
-      title: 'Linux中文客户端 - Skylake架构',
-      version: 'version 0.2.0-zhCN',
-      link: '/nimiqpocket-miner-linux-skylake-zh.zip',
-      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    },
-    {
-      title: 'Linux中文客户端 - SandyBridge架构',
-      version: 'version 0.2.0-zhCN',
-      link: '/nimiqpocket-miner-linux-sandybridge-zh.zip',
-      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    },
-    {
-      title: 'Linux中文客户端 - IvyBridge架构',
-      version: 'version 0.2.0-zhCN',
-      link: '/nimiqpocket-miner-linux-ivybridge-zh.zip',
-      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    }
+    intel: [
+      {
+        title: 'Linux binary beta client - Skylake',
+        version: 'version 0.2.0',
+        link: '/nimiqpocket-miner-linux-skylake-en.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+      {
+        title: 'Linux binary beta client - Skylake Avx512',
+        version: 'version 0.2.0',
+        link: '/nimiqpocket-miner-linux-skylake-avx512-en.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+      {
+        title: 'Linux binary beta client - Broadwell',
+        version: 'version 0.2.0',
+        link: '/nimiqpocket-miner-linux-broadwell-en.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+      {
+        title: 'Linux binary beta client - IvyBridge',
+        version: 'version 0.2.0',
+        link: '/nimiqpocket-miner-linux-ivybridge-en.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+      {
+        title: 'Linux binary beta client - SandyBridge',
+        version: 'version 0.2.0',
+        link: '/nimiqpocket-miner-linux-sandybridge-en.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+
+      {
+        title: 'Linux中文客户端 - Skylake架构',
+        version: 'version 0.2.0-zhCN',
+        link: '/nimiqpocket-miner-linux-skylake-zh.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+      {
+        title: 'Linux中文客户端 - SandyBridge架构',
+        version: 'version 0.2.0-zhCN',
+        link: '/nimiqpocket-miner-linux-sandybridge-zh.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      },
+      {
+        title: 'Linux中文客户端 - IvyBridge架构',
+        version: 'version 0.2.0-zhCN',
+        link: '/nimiqpocket-miner-linux-ivybridge-zh.zip',
+        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+      }
     ],
     ryzen: [
       {
-        title: 'Coming soon',
-        // version: 'version 0.2.0',
-        // link: '/nimiqpocket-miner-linux-skylake-en.zip',
+        title: 'Linux binary beta client - Ryzen',
+        version: 'version 0.2.0',
+        link: '/nimiqpocket-miner-linux-ryzen-en.zip',
         logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
       }
     ]
@@ -98,8 +119,8 @@ const data = {
   ],
   wslData: [
     {
-      title: 'Windows client powered by NIMIQ DESKTOP MINER ',
-      version: `Mine faster with the Nimiq Desktop Miner for Windows 10. The quickest, easiest miner available for mining NIM on Windows. No compiling, no config files. Just install and start mining.`,
+      title: 'NIMIQ DESKTOP MINER ',
+      // version: `version `,
       link: 'https://nimiqdesktop.com/',
       logo: require('./assets/if_windows_1296843.png')
     }
@@ -118,7 +139,13 @@ const data = {
   ]
 };
 
-const panes = [{ key: '1' }, { key: '2' }, { key: '3' }, { key: '4' }];
+const panes = [
+  { key: '1' },
+  { key: '2' },
+  { key: '3' },
+  { key: '4' },
+  { key: '5' }
+];
 
 class App extends Component {
   constructor() {
@@ -129,20 +156,27 @@ class App extends Component {
       isHKloading: true,
       pool: {},
       hk: {},
-      kr: {},
+      eu: {},
+      us:{},
       poolStats: {},
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
       loadingBalance: false,
       activeKey: panes[0].key,
-      panes
+      panes,
+      visible: false,
+      walletAddress: '',
+      poolAddress: 'pool.nimiqpocket.com'
     };
   }
   async componentDidMount() {
     try {
       const walletAddress = localStorage.getItem('walletAddress');
-      if (walletAddress) this.fetchBalance(walletAddress);
+      if (walletAddress) {
+        this.fetchBalance(walletAddress);
+        this.setState({ walletAddress: walletAddress });
+      }
       axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
         this.setState({
           hk: hk.data,
@@ -150,9 +184,9 @@ class App extends Component {
           isHKloading: false
         });
       });
-      axios.get('https://kr.nimiqpocket.com:8444/').then(kr => {
+      axios.get('https://eu.nimiqpocket.com:8444/').then(eu => {
         this.setState({
-          kr: kr.data,
+          eu: eu.data,
 
           isKRloading: false
         });
@@ -164,10 +198,62 @@ class App extends Component {
           isUSloading: false
         });
       });
+      // axios.get('https://us.nimiqpocket.com:8444/').then(us => {
+      //   this.setState({
+      //     us: us.data,
+
+      //     isUSloading: false
+      //   });
+      // });
 
       this.setState({
         currentListVersion: data.linuxData
       });
+
+      const args = {
+        message: 'Update on 31st July 2018',
+        description:
+          'Launched web miner and supported Ryzen and Intel broadwell/skylake-avx512',
+        duration: 10,
+        icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />
+      };
+      notification.open(args);
+
+      setInterval(() => {
+        this.setState({
+          isUSloading: true,
+          isKRloading: true,
+          isHKloading: true
+        });
+        axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
+          this.setState({
+            hk: hk.data,
+
+            isHKloading: false
+          });
+        });
+        axios.get('https://eu.nimiqpocket.com:8444/').then(eu => {
+          this.setState({
+            eu: eu.data,
+
+            isKRloading: false
+          });
+        });
+        axios.get('https://pool.nimiqpocket.com:8444/').then(pool => {
+          this.setState({
+            pool: pool.data,
+
+            isUSloading: false
+          });
+        });
+        // axios.get('https://us.nimiqpocket.com:8444/').then(us => {
+        //   this.setState({
+        //     us: us.data,
+
+        //     isUSloading: false
+        //   });
+        // });
+      }, 1000 * 60 * 3);
     } catch (e) {
       console.log(e);
     }
@@ -196,7 +282,7 @@ class App extends Component {
       loadingBalance: true
     });
     axios
-      .get(`https://hk.nimiqpocket.com:5656/api/balance/${address}`)
+      .get(`https://us.nimiqpocket.com:5656/api/balance/${address}`)
       .then(res => {
         res.data.activeDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))
@@ -256,28 +342,113 @@ class App extends Component {
     return this.humanHashes(totalHashrate);
   }
 
+  showDrawer = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      visible: false
+    });
+  };
+
+  onChangeWalletAddress = e => {
+    const { value } = e.target;
+    this.setState({ walletAddress: value });
+    console.log(this.state.walletAddress);
+  };
+  onChangePoolAddress = poolAddress => {
+    this.setState({ poolAddress });
+    console.log(poolAddress, this.state.poolAddress);
+  };
   render() {
     const { Header, Content, Footer } = Layout;
     const { t, i18n } = this.props;
 
-    const changeLanguage = (lng) => {
+    const changeLanguage = lng => {
       i18n.changeLanguage(lng);
-    }
+    };
     return (
       <Layout className="layout">
-        <HeaderStats
-          hk={this.state.hk}
-        />
+        <HeaderStats hk={this.state.hk} />
         <Content style={{ padding: '0 50px' }}>
-          <Tooltip title="Click to type your wallet address">
-            <Button
-              className="wallet-search"
-              shape="circle"
-              size="large"
-              icon="search"
-              onClick={this.showBalanceModal}
+          <Row
+            style={{
+              width: '90%',
+              position: 'relative',
+              height: '100%'
+            }}
+          >
+            <Tooltip title="Click to type your wallet address">
+              <Button
+                className="wallet-search"
+                shape="circle"
+                size="large"
+                icon="search"
+                onClick={this.showBalanceModal}
+              />
+            </Tooltip>
+            <Tooltip title="Web Miner">
+              <Button
+                className="web-miner"
+                shape="circle"
+                size="large"
+                icon="cloud-o"
+                onClick={this.showDrawer}
+              />
+            </Tooltip>
+          </Row>
+          <Drawer
+            title="NimiqPocket Web Miner"
+            placement="left"
+            width={430}
+            closable={true}
+            onClose={this.onClose}
+            visible={this.state.visible}
+          >
+            <Row>
+              <Col span={24}>
+                <Input
+                  onChange={this.onChangeWalletAddress}
+                  value={this.state.walletAddress}
+                  placeholder="Please enter your wallet address"
+                />
+              </Col>
+
+              <Col span={24}>
+                <Select
+                  value={this.state.poolAddress}
+                  onChange={this.onChangePoolAddress}
+                  placeholder="Please select a pool close to you"
+                >
+                  <Option value="eu.nimiqpocket.com">
+                    eu.nimiqpocket.com (Netherlands)
+                  </Option>
+                  <Option value="hk.nimiqpocket.com">
+                    hk.nimiqpocket.com (Hong Kong)
+                  </Option>
+                  <Option value="pool.nimiqpocket.com">
+                    pool.nimiqpocket.com( West US)
+                  </Option>
+                </Select>
+              </Col>
+            </Row>
+
+            <WebMiner
+              network="main"
+              address={this.state.walletAddress}
+              poolServer={this.state.poolAddress}
+              poolPort={8444}
+              // targetHash="500000"
+              width="260px"
+              height="auto"
+              autoStart={false}
+              displayMode="full"
+              border={false}
             />
-          </Tooltip>
+          </Drawer>
 
           <Modal
             title="Wallet Address"
@@ -312,8 +483,8 @@ class App extends Component {
                   <PoolStats
                     loading={this.state.isKRloading}
                     title={t('dashboard.sk')}
-                    flag={require('./assets/if_Korea-South_298472.png')}
-                    pool={this.state.kr}
+                    flag={require('./assets/if_Netherlands_92243.png')}
+                    pool={this.state.eu}
                     poweredBy={require('./assets/azure.png')}
                   />
                 </Col>
@@ -333,10 +504,16 @@ class App extends Component {
             </TabPane>
             <TabPane tab={t('balance.title')} key={this.state.panes[1].key}>
               {this.state.userBalance && (
-                <Balance userBalance={this.state.userBalance} loadingBalance={this.state.loadingBalance} />
+                <Balance
+                  userBalance={this.state.userBalance}
+                  loadingBalance={this.state.loadingBalance}
+                />
               )}
             </TabPane>
-            <TabPane tab={t('connect.title')} key={this.state.panes[2].key}>
+            <TabPane tab={t('blocks.title')} key={this.state.panes[2].key}>
+              <Blocks />
+            </TabPane>
+            <TabPane tab={t('connect.title')} key={this.state.panes[3].key}>
               <Card
                 title="NIMIQPOCKET BINARY MINER"
                 bordered={false}
@@ -354,63 +531,72 @@ class App extends Component {
                   <RadioButton value="android">Android</RadioButton>
                 </RadioGroup>
 
-                {this.state.currentListVersion.intel && <Collapse bordered={false}>
-                  <Panel header={<img
-                    src={require('./assets/intel-logo-transparent.png')}
-                  />} key="1" style={customPanelStyle}>
-                    <List
-                      size="large"
-                      dataSource={this.state.currentListVersion.intel}
-                      renderItem={item => (
-                        <List.Item
-                          actions={[
-                            item.link && (
-                              <a href={item.link} target="_blank" download>
-                                {' '}
-                                <Button type="primary">Download</Button>
-                              </a>
-                            )
-                          ]}
-                        >
-                          <List.Item.Meta
-                            avatar={<Avatar src={item.logo} />}
-                            title={item.title}
-                            description={item.version}
-                          />
-                        </List.Item>
-                      )}
-                    />
-                  </Panel>
-                  <Panel className="ryzen" header={<img
-                    src={require('./assets/ryzen-logo-300x150.png')}
-                  />} key="2" style={customPanelStyle}>
-                    <List
-                      size="large"
-                      dataSource={this.state.currentListVersion.ryzen}
-                      renderItem={item => (
-                        <List.Item
-                          actions={[
-                            item.link && (
-                              <a href={item.link} target="_blank" download>
-                                {' '}
-                                <Button type="primary">Download</Button>
-                              </a>
-                            )
-                          ]}
-                        >
-                          <List.Item.Meta
-                            avatar={<Avatar src={item.logo} />}
-                            title={item.title}
-                            description={item.version}
-                          />
-                        </List.Item>
-                      )}
-                    />
-                  </Panel>
-
-                </Collapse>
-                }
-                {!this.state.currentListVersion.intel &&
+                {this.state.currentListVersion.intel && (
+                  <Collapse bordered={false}>
+                    <Panel
+                      header={
+                        <img src={require('./assets/Intel-event-logo.png')} />
+                      }
+                      key="1"
+                      style={customPanelStyle}
+                    >
+                      <List
+                        size="large"
+                        dataSource={this.state.currentListVersion.intel}
+                        renderItem={item => (
+                          <List.Item
+                            actions={[
+                              item.link && (
+                                <a href={item.link} target="_blank" download>
+                                  {' '}
+                                  <Button type="primary">Download</Button>
+                                </a>
+                              )
+                            ]}
+                          >
+                            <List.Item.Meta
+                              avatar={<Avatar src={item.logo} />}
+                              title={item.title}
+                              description={item.version}
+                            />
+                          </List.Item>
+                        )}
+                      />
+                    </Panel>
+                    <Panel
+                      className="ryzen"
+                      header={
+                        <img src={require('./assets/ryzen-logo-300x150.png')} />
+                      }
+                      key="2"
+                      style={customPanelStyle}
+                    >
+                      <List
+                        size="large"
+                        dataSource={this.state.currentListVersion.ryzen}
+                        renderItem={item => (
+                          <List.Item
+                            actions={[
+                              item.link && (
+                                <a href={item.link} target="_blank" download>
+                                  {' '}
+                                  <Button type="primary">Download</Button>
+                                </a>
+                              )
+                            ]}
+                          >
+                            <List.Item.Meta
+                              avatar={<Avatar src={item.logo} />}
+                              title={item.title}
+                              description={item.version}
+                            />
+                          </List.Item>
+                        )}
+                      />
+                    </Panel>
+                  </Collapse>
+                )}
+                {!this.state.currentListVersion.intel && (
                   <List
                     size="large"
                     dataSource={this.state.currentListVersion}
@@ -433,9 +619,8 @@ class App extends Component {
                       </List.Item>
                     )}
                   />
-                }
+                )}
               </Card>
-
 
               <Card
                 title="CONNECT WITH OFFICAL NODEJS MINER"
@@ -476,33 +661,12 @@ Use $ chmod 755 miner if you experience permission issue
                 </a>
               </Card>
             </TabPane>
-            <TabPane tab={t('faq.title')} key={this.state.panes[3].key}>
-              Coming Soon
+            <TabPane tab={t('faq.title')} key={this.state.panes[4].key}>
+              <Faq />
             </TabPane>
           </Tabs>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          <Row>
-            Join our channels: {' '}
-            <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=9fbcea0108f94f02aa4633e9fdd651a4f36807eb804db57029c26a5e87cafc79"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Nimiq口袋" title="Nimiq口袋 649287531" /></a>
-
-            <a href="https://discord.gg/qZZMtrK" target="_blank">
-              <img
-                width="100"
-                height="34"
-                src={require('./assets/Discord-Logo+Wordmark-Color.png')}
-                alt="Discord"
-              />
-            </a>{' '}
-          </Row>
-          <Row>
-            Nimiq Pocket ©2018 | Powered by{' '} the   <a href="https://api.nimiqx.com/" target="_blank">Nimiq</a> Blockchain
-            {/* <a href="https://api.nimiqx.com/" target="_blank">
-              NimiqX
-            </a>{' '} */}
-
-          </Row>
-        </Footer>
+        <CustomFooter />
       </Layout>
     );
   }

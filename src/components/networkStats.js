@@ -14,15 +14,13 @@ class NetworkStats extends Component {
   }
   async componentDidMount() {
     try {
-      const [networkStats, price] = await Promise.all([
-        axios.get('https://kr.nimiqpocket.com:5656/api/networkstats'),
-        axios.get('https://kr.nimiqpocket.com:5656/api/price')
+      const [networkStats] = await Promise.all([
+        axios.get('https://us.nimiqpocket.com:5656/api/networkstats'),
       ]);
 
       this.setState({
         isNetworkStatsLoading: false,
         networkStats: networkStats.data,
-        price: price.data
       });
     } catch (e) {
       console.log(e);
@@ -49,7 +47,7 @@ class NetworkStats extends Component {
     return (
       <Card
         title=  {t('dashboard.network.title')}
-        extra={<p>Power by <a href="https://api.nimiqx.com/">nimiqX</a></p>}
+        extra={<p>Power by <a href="https://api.nimiqx.com/" target="_blank">NimiqX</a></p>}
         bordered={false}
         style={{ width: '90%' }}
         className='network-stats'
@@ -67,9 +65,7 @@ class NetworkStats extends Component {
         <p>
           1KH/s: <span>{this.state.networkStats.nim_day_kh} NIM </span>  {t('dashboard.network.per_day')} 
         </p>
-        <p>
-          {t('dashboard.network.price.title')}:  {t('dashboard.network.price.btc')} <span>{this.state.price.btc}</span> /   {t('dashboard.network.price.usd')} <span>{this.state.price.usd}</span>
-        </p>
+
       </Card>
     );
   }

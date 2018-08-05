@@ -9,7 +9,7 @@
     "dashboard":{
       "title":"首页",
       "hk":"香港",
-      "sk":"韩国",
+      "sk":"荷兰",
       "us_w":"美国西部",
       "hashrate":"哈希率",
       "numClients": "矿机数量",
@@ -31,6 +31,9 @@
       "unpaid":"余额",
       "devices":"矿机总数",
       "total_hashrate":"总哈希率"
+    },
+    "blocks":{
+      "title": "出块查询"
     },
     "connect":{
       "title":"下载"

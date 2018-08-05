@@ -9,7 +9,7 @@
   "dashboard":{
     "title":"DASHBOARD",
     "hk":"HONG KONG",
-    "sk":"SOUTH KOREA",
+    "sk":"NETHERLANDS",
     "us_w":"WEST US",
     "hashrate":"Hashrate",
     "numClients": "Number of Miners",
@@ -31,6 +31,9 @@
     "unpaid":"Unpaid Balance",
     "devices":"Total Devices",
     "total_hashrate":"Total Hashrate"
+  },
+  "blocks":{
+    "title": "BLOCKS"
   },
   "connect":{
     "title":"CONNECT"

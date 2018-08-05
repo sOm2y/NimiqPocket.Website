@@ -11,41 +11,65 @@ class HeaderStats extends Component {
     this.state = { poolStats: {}, isHeaderLoading: true };
   }
   async componentDidMount() {
-    const [poolStats] = await Promise.all([
-      axios.get('https://hk.nimiqpocket.com:5656/api/poolstats')
-    ]);
-    this.setState({
-      isHeaderLoading: false,
-      poolStats: poolStats.data,
-    });
+    axios
+      .get('https://us.nimiqpocket.com:5656/api/poolstats')
+      .then(poolStats => {
+        this.setState({
+          isHeaderLoading: false,
+          poolStats: poolStats.data
+        });
+      });
+
+    setInterval(() => {
+      this.setState({
+        isHeaderLoading: true
+      });
+      axios
+        .get('https://us.nimiqpocket.com:5656/api/poolstats')
+        .then(poolStats => {
+          this.setState({
+            isHeaderLoading: false,
+            poolStats: poolStats.data
+          });
+        });
+    }, 1000 * 60 * 3);
   }
 
   render() {
     const { t, i18n } = this.props;
 
-
-    const handleLangChange = (value) => {
+    const handleLangChange = value => {
       i18n.changeLanguage(value);
-    }
+    };
     const { Header } = Layout;
     const antIcon = (
       <Icon type="loading" style={{ fontSize: 24, color: '#fff' }} spin />
     );
     return (
       <Header className="App-header">
-        <Select className="header-lang" defaultValue={localStorage.getItem('i18nextLng') ? localStorage.getItem('i18nextLng') : 'en'} onChange={handleLangChange}>
+        <Select
+          className="header-lang"
+          defaultValue={
+            localStorage.getItem('i18nextLng')
+              ? localStorage.getItem('i18nextLng')
+              : 'en'
+          }
+          onChange={handleLangChange}
+        >
           <Option value="zh-CN">
             <img
               alt=""
               src={require('../assets/china.png')}
               style={{ width: 30 }}
-            /></Option>
+            />
+          </Option>
           <Option value="en">
             <img
               alt=""
               src={require('../assets//united-kingdom.png')}
               style={{ width: 30 }}
-            /></Option>
+            />
+          </Option>
         </Select>
         <div className="header-logo">
           <img
@@ -61,28 +85,23 @@ class HeaderStats extends Component {
           {this.state.isHeaderLoading ? (
             <Spin indicator={antIcon} />
           ) : (
-              <p>
-                <span> {humanHashes(this.state.poolStats.totalHashrate)}</span>
-              </p>
-            )}
+            <p>
+              <span> {humanHashes(this.state.poolStats.totalHashrate)}</span>
+            </p>
+          )}
           {!this.state.isHeaderLoading && (
             <p>
-
-              {t('header.fee')} <span> {this.props.hk.poolFee} </span>% |   {t('header.found')}{' '}
+              {t('header.fee')} <span> {this.props.hk.poolFee} </span>% |{' '}
+              {t('header.found')}{' '}
               <span>{this.state.poolStats.totalBlocksMined}</span>
               {t('header.block')}
             </p>
           )}{' '}
-
           <p className="header-payout">
             <Trans i18nKey="header.auto_payout">
               Auto Payout: Every <span>1 </span> hour for confirmed balance over
             </Trans>
             <span>10 </span> NIM
-          </p>
-
-          <p className="header-payout">
-            {t('header.pool_address')}: {this.props.hk.poolAddress}
           </p>
         </div>
       </Header>
