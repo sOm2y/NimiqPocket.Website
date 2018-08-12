@@ -167,7 +167,7 @@ class App extends Component {
       panes,
       visible: false,
       walletAddress: '',
-      poolAddress: 'pool.nimiqpocket.com'
+      poolAddress: 'us.nimiqpocket.com'
     };
   }
   async componentDidMount() {
@@ -191,7 +191,7 @@ class App extends Component {
           isKRloading: false
         });
       });
-      axios.get('https://pool.nimiqpocket.com:8444/').then(pool => {
+      axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
         this.setState({
           pool: pool.data,
 
@@ -239,7 +239,7 @@ class App extends Component {
             isKRloading: false
           });
         });
-        axios.get('https://pool.nimiqpocket.com:8444/').then(pool => {
+        axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
           this.setState({
             pool: pool.data,
 
@@ -429,8 +429,8 @@ class App extends Component {
                   <Option value="hk.nimiqpocket.com">
                     hk.nimiqpocket.com (Hong Kong)
                   </Option>
-                  <Option value="pool.nimiqpocket.com">
-                    pool.nimiqpocket.com( West US)
+                  <Option value="us.nimiqpocket.com">
+                    us.nimiqpocket.com( West US)
                   </Option>
                 </Select>
               </Col>
@@ -494,7 +494,7 @@ class App extends Component {
                     title={t('dashboard.us_w')}
                     flag={require('./assets/if_US_167805.png')}
                     pool={this.state.pool}
-                    poweredBy={require('./assets/do.png')}
+                    poweredBy={require('./assets/azure.png')}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>

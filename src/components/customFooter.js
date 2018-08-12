@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
-import { Card, Spin, Row, Layout, Col, Icon } from 'antd';
+import { Card, Spin, Row, Layout, Col, Icon, Menu, Dropdown, Button } from 'antd';
 import axios from 'axios';
 import { translate, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const { Header, Content, Footer } = Layout;
+const menu = (
+  <Menu>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="https://nimiq.watch/">Nimiq Watch</a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="https://nimiq.mopsus.com/">Nimiq Mopsus</a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="https://nimiqscan.com/">Nimiqscan</a>
+    </Menu.Item>
+    <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="https://nimiqo.com/explorer">Nimiqo</a>
+    </Menu.Item>
+  </Menu>
+);
 
 class CustomFooter extends Component {
   constructor(props) {
@@ -38,31 +54,43 @@ class CustomFooter extends Component {
               xl={14}
               style={{ textAlign: 'left' }}
             >
-              <a href="https://nimiq.community/" target="_blank">
-                COMMUNITY
-              </a>
               <a href="https://www.nimiqchina.com/" target="_blank">
                 NIMIQCHINA|中文
               </a>
+              <a href="https://poolwatch.info/" target="_blank">
+                POOLWATCH
+              </a>
+              <Dropdown overlay={menu} placement="topLeft">
+                <Button style={{
+                border: 0,
+                color: '#a553fe',
+                fontSize: 14,
+                padding: '0 9px 0 0'
+              }} >NIMIQ EXPLORER</Button>
+              </Dropdown>
               <a href="https://zhuanlan.zhihu.com/nimiq" target="_blank">
                 {' '}
-                NIMIQ <Icon type="zhihu" />
+                <Icon type="zhihu" />
               </a>
-              <span>
-                {' '}
-                <strong>
-                  {t('dashboard.network.price.btc')} {this.state.price.btc}/{' '}
-                  {t('dashboard.network.price.usd')} {this.state.price.usd}{' '}
-                  {this.state.price.percent_change_24h &&
-                  this.state.price.percent_change_24h.usd >0 ? (
-                    <Icon style={{ color: 'green' }} type="caret-up" />
-                  ) : (
-                    <Icon style={{ color: 'red' }} type="caret-down" />
-                  )}
-                  {this.state.price.percent_change_24h &&
-                    this.state.price.percent_change_24h.usd}%{' '}
-                </strong>
-              </span>
+
+              <a style={{ color: '#555' }} href="https://coinmarketcap.com/currencies/nimiq/" target="_blank">
+                <span>
+                  {' '}
+                  <strong>
+                    {t('dashboard.network.price.btc')} {this.state.price.btc}/{' '}
+                    {t('dashboard.network.price.usd')} {this.state.price.usd}{' '}
+                    {this.state.price.percent_change_24h &&
+                      this.state.price.percent_change_24h.usd > 0 ? (
+                        <Icon style={{ color: 'green' }} type="caret-up" />
+                      ) : (
+                        <Icon style={{ color: 'red' }} type="caret-down" />
+                      )}
+                    {this.state.price.percent_change_24h &&
+                      this.state.price.percent_change_24h.usd}%{' '}
+                  </strong>
+                </span>
+              </a>
+
             </Col>
             <Col
               xs={24}
@@ -99,7 +127,7 @@ class CustomFooter extends Component {
             </Col>
           </Row>
         </Card>
-      </Footer>
+      </Footer >
     );
   }
 }
