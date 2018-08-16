@@ -12,7 +12,7 @@ const pplns = `
   PPLNS greatly involves luck factor and you’ll notice huge fluctuations in your 24 hour payout. 
   If you maintain your mining on a single pool then your payouts will remain consistent and it only differs when new miners join or leave the pool.
 `;
-const fee = `Pool is currently at Beta, So we decide to run 0% fee during Beta test.`;
+const fee = `Pool fee is 1%.`;
 const payout = `The balance will be sent to wallet address if it is larger than 10 NIMs for every 1 hour. `;
 
 class Faq extends Component {

@@ -7,6 +7,9 @@ const { Header, Content, Footer } = Layout;
 const menu = (
   <Menu>
     <Menu.Item>
+      <a target="_blank" rel="noopener noreferrer" href="https://nimiqo.com/explorer">Nimiqo</a>
+    </Menu.Item>
+    <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="https://nimiq.watch/">Nimiq Watch</a>
     </Menu.Item>
     <Menu.Item>
@@ -14,9 +17,6 @@ const menu = (
     </Menu.Item>
     <Menu.Item>
       <a target="_blank" rel="noopener noreferrer" href="https://nimiqscan.com/">Nimiqscan</a>
-    </Menu.Item>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="https://nimiqo.com/explorer">Nimiqo</a>
     </Menu.Item>
   </Menu>
 );

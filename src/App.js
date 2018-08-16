@@ -120,7 +120,7 @@ const data = {
   wslData: [
     {
       title: 'NIMIQ DESKTOP MINER ',
-      // version: `version `,
+      version: `version 0.3.0`,
       link: 'https://nimiqdesktop.com/',
       logo: require('./assets/if_windows_1296843.png')
     }
@@ -184,13 +184,6 @@ class App extends Component {
           isHKloading: false
         });
       });
-      axios.get('https://eu.nimiqpocket.com:8444/').then(eu => {
-        this.setState({
-          eu: eu.data,
-
-          isKRloading: false
-        });
-      });
       axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
         this.setState({
           pool: pool.data,
@@ -232,13 +225,7 @@ class App extends Component {
             isHKloading: false
           });
         });
-        axios.get('https://eu.nimiqpocket.com:8444/').then(eu => {
-          this.setState({
-            eu: eu.data,
 
-            isKRloading: false
-          });
-        });
         axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
           this.setState({
             pool: pool.data,
@@ -423,9 +410,6 @@ class App extends Component {
                   onChange={this.onChangePoolAddress}
                   placeholder="Please select a pool close to you"
                 >
-                  <Option value="eu.nimiqpocket.com">
-                    eu.nimiqpocket.com (Netherlands)
-                  </Option>
                   <Option value="hk.nimiqpocket.com">
                     hk.nimiqpocket.com (Hong Kong)
                   </Option>
@@ -479,15 +463,7 @@ class App extends Component {
                     poweredBy={require('./assets/azure.png')}
                   />
                 </Col>
-                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <PoolStats
-                    loading={this.state.isKRloading}
-                    title={t('dashboard.sk')}
-                    flag={require('./assets/if_Netherlands_92243.png')}
-                    pool={this.state.eu}
-                    poweredBy={require('./assets/azure.png')}
-                  />
-                </Col>
+
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isUSloading}
@@ -515,7 +491,7 @@ class App extends Component {
             </TabPane>
             <TabPane tab={t('connect.title')} key={this.state.panes[3].key}>
               <Card
-                title="NIMIQPOCKET BINARY MINER"
+                title="CONNECT WITH NIMIQPOCKET MINER"
                 bordered={false}
                 style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
               >
@@ -639,27 +615,7 @@ poolMining: {
           `}</pre>
               </Card>
 
-              <Card
-                title="SETUP WITH SOURCE PACK"
-                bordered={false}
-                style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
-              >
-                <pre>{`wget https://nimiqpocket.com/nimiq-pocket-0.1.zip
-unzip nimiq-pocket-miner-0.1.zip
-cd nimiq-core
-sudo npm install -g gulp
-npm install
-gulp build-node
-./miner --miner=8 --wallet-address="NQXX XXXX .." --extra-data="name for your miner"
-
-Use $ chmod 755 miner if you experience permission issue
-          `}</pre>
-
-                <a download="nimiq-pocket-0.1.zip" target="_blank" href="/">
-                  {' '}
-                  <Button type="primary">Download</Button>
-                </a>
-              </Card>
+           
             </TabPane>
             <TabPane tab={t('faq.title')} key={this.state.panes[4].key}>
               <Faq />

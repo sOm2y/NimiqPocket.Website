@@ -8,28 +8,36 @@ class Balance extends Component {
     super(props);
     this.state = {};
   }
-  async componentDidMount() {}
+  async componentDidMount() { }
   render() {
     const walletAddressColumn = [
       {
-      title: 'DeviceId',
-      dataIndex: 'activeDeviceId',
-      key: 'activeDeviceId'
+        title: 'DeviceId',
+        dataIndex: 'activeDeviceId',
+        key: 'activeDeviceId'
       },
       {
-      title: 'Hashrate',
-      dataIndex: 'hashrate'
+        title: 'Name',
+        dataIndex: 'deviceName'
+      },
+      {
+        title: 'Hashrate',
+        dataIndex: 'hashrate'
+      },
+      {
+        title: '24Hr Hashrate',
+        dataIndex: 'dayHashrate'
       }
-  ];
-  
+    ];
+
     const { t, i18n } = this.props;
 
     const changeLanguage = (lng) => {
       i18n.changeLanguage(lng);
     }
-    
+
     return (
-        <Card
+      <Card
         title={`${t('balance.unpaid')} : ${this.props.userBalance.balance / 100000} NIM`}
         bordered={false}
         style={{ width: '85%' }}
