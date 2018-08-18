@@ -162,6 +162,7 @@ class App extends Component {
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
+      devices:{},
       loadingBalance: false,
       activeKey: panes[0].key,
       panes,
@@ -177,20 +178,20 @@ class App extends Component {
         this.fetchBalance(walletAddress);
         this.setState({ walletAddress: walletAddress });
       }
-      axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
-        this.setState({
-          hk: hk.data,
+      // axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
+      //   this.setState({
+      //     hk: hk.data,
 
-          isHKloading: false
-        });
-      });
-      axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
-        this.setState({
-          pool: pool.data,
+      //     isHKloading: false
+      //   });
+      // });
+      // axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
+      //   this.setState({
+      //     pool: pool.data,
 
-          isUSloading: false
-        });
-      });
+      //     isUSloading: false
+      //   });
+      // });
       // axios.get('https://us.nimiqpocket.com:8444/').then(us => {
       //   this.setState({
       //     us: us.data,
@@ -213,26 +214,26 @@ class App extends Component {
       notification.open(args);
 
       setInterval(() => {
-        this.setState({
-          isUSloading: true,
-          isKRloading: true,
-          isHKloading: true
-        });
-        axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
-          this.setState({
-            hk: hk.data,
+        // this.setState({
+        //   isUSloading: true,
+        //   isKRloading: true,
+        //   isHKloading: true
+        // });
+        // axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
+        //   this.setState({
+        //     hk: hk.data,
 
-            isHKloading: false
-          });
-        });
+        //     isHKloading: false
+        //   });
+        // });
 
-        axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
-          this.setState({
-            pool: pool.data,
+        // axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
+        //   this.setState({
+        //     pool: pool.data,
 
-            isUSloading: false
-          });
-        });
+        //     isUSloading: false
+        //   });
+        // });
         // axios.get('https://us.nimiqpocket.com:8444/').then(us => {
         //   this.setState({
         //     us: us.data,
@@ -269,7 +270,7 @@ class App extends Component {
       loadingBalance: true
     });
     axios
-      .get(`https://us.nimiqpocket.com:5656/api/balance/${address}`)
+      .get(`https://api.nimiqpocket.com:8080/api/device/${address}`)
       .then(res => {
         res.data.activeDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))
@@ -278,6 +279,18 @@ class App extends Component {
           isBalanceModalOpen: false,
           loadingBalance: false,
 
+          devices: res.data
+        });
+        localStorage.setItem('walletAddress', address);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      axios
+      .get(`https://api.nimiqpocket.com:8080/api/balance/${address}`)
+      .then(res => {
+     
+        this.setState({
           userBalance: res.data
         });
         localStorage.setItem('walletAddress', address);
@@ -454,7 +467,7 @@ class App extends Component {
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
-                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                {/* <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isHKloading}
                     title={t('dashboard.hk')}
@@ -472,15 +485,16 @@ class App extends Component {
                     pool={this.state.pool}
                     poweredBy={require('./assets/azure.png')}
                   />
-                </Col>
+                </Col> */}
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <NetworkStats />
                 </Col>
               </Row>
             </TabPane>
             <TabPane tab={t('balance.title')} key={this.state.panes[1].key}>
-              {this.state.userBalance && (
+              {this.state.devices && (
                 <Balance
+                  devices={this.state.devices}
                   userBalance={this.state.userBalance}
                   loadingBalance={this.state.loadingBalance}
                 />

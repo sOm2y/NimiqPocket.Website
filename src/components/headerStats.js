@@ -12,7 +12,7 @@ class HeaderStats extends Component {
   }
   async componentDidMount() {
     axios
-      .get('https://us.nimiqpocket.com:5656/api/poolstats')
+      .get('https://api.nimiqpocket.com:8080/api/poolstats/hk')
       .then(poolStats => {
         this.setState({
           isHeaderLoading: false,
@@ -25,7 +25,7 @@ class HeaderStats extends Component {
         isHeaderLoading: true
       });
       axios
-        .get('https://us.nimiqpocket.com:5656/api/poolstats')
+        .get('https://api.nimiqpocket.com:8080/api/poolstats/hk')
         .then(poolStats => {
           this.setState({
             isHeaderLoading: false,
@@ -79,24 +79,19 @@ class HeaderStats extends Component {
             src={require('../assets/nimiq_pokedex_logo.png')}
             alt=""
           />{' '}
-          NIMIQ POCKET <sup>BETA</sup>
+          口袋池子 <sup>NIMIQ</sup>
         </div>
         <div className="header-stats">
           {this.state.isHeaderLoading ? (
             <Spin indicator={antIcon} />
           ) : (
+            
             <p>
+              <div> 总算力 </div>
               <span> {humanHashes(this.state.poolStats.totalHashrate)}</span>
             </p>
           )}
-          {!this.state.isHeaderLoading && (
-            <p>
-              {t('header.fee')} <span> {this.props.hk.poolFee} </span>% |{' '}
-              {t('header.found')}{' '}
-              <span>{this.state.poolStats.totalBlocksMined}</span>
-              {t('header.block')}
-            </p>
-          )}{' '}
+         
           <p className="header-payout">
             <Trans i18nKey="header.auto_payout">
               Auto Payout: Every <span>1 </span> hour for confirmed balance over

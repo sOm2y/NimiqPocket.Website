@@ -15,7 +15,7 @@ class NetworkStats extends Component {
   async componentDidMount() {
     try {
       const [networkStats] = await Promise.all([
-        axios.get('https://us.nimiqpocket.com:5656/api/networkstats'),
+        axios.get('https://api.nimiqpocket.com:8080/api/networkstats'),
       ]);
 
       this.setState({

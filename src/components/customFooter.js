@@ -28,7 +28,7 @@ class CustomFooter extends Component {
   }
   async componentDidMount() {
     const [price] = await Promise.all([
-      axios.get('https://us.nimiqpocket.com:5656/api/price')
+      axios.get('https://api.nimiqpocket.com:8080/api/price')
     ]);
 
     this.setState({
@@ -68,10 +68,6 @@ class CustomFooter extends Component {
                 padding: '0 9px 0 0'
               }} >NIMIQ EXPLORER</Button>
               </Dropdown>
-              <a href="https://zhuanlan.zhihu.com/nimiq" target="_blank">
-                {' '}
-                <Icon type="zhihu" />
-              </a>
 
               <a style={{ color: '#555' }} href="https://coinmarketcap.com/currencies/nimiq/" target="_blank">
                 <span>

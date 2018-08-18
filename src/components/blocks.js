@@ -27,12 +27,12 @@ class blocks extends Component {
     try {
       const [blocks, transactions] = await Promise.all([
         axios.get(
-          `https://us.nimiqpocket.com:5656/api/blocks/NQ37%2047US%20CL1J%20M0KQ%20KEY3%20YQ4G%20KGHC%20VPVF%208L02/${
+          `https://api.nimiqpocket.com:8080/api/blocks/NQ37%2047US%20CL1J%20M0KQ%20KEY3%20YQ4G%20KGHC%20VPVF%208L02/${
             this.state.limit
           }/${this.state.skip}`
         ),
         axios.get(
-          `https://us.nimiqpocket.com:5656/api/transactions/NQ37%2047US%20CL1J%20M0KQ%20KEY3%20YQ4G%20KGHC%20VPVF%208L02/${
+          `https://api.nimiqpocket.com:8080/api/transactions/NQ37%2047US%20CL1J%20M0KQ%20KEY3%20YQ4G%20KGHC%20VPVF%208L02/${
             this.state.limitPayout
           }/${this.state.skipPayout}`
         )
