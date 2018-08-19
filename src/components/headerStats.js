@@ -12,7 +12,7 @@ class HeaderStats extends Component {
   }
   async componentDidMount() {
     axios
-      .get('https://us.nimiqpocket.com:5656/api/poolstats')
+      .get('https://api.nimiqpocket.com:8080/api/poolstats/us')
       .then(poolStats => {
         this.setState({
           isHeaderLoading: false,
@@ -25,7 +25,7 @@ class HeaderStats extends Component {
         isHeaderLoading: true
       });
       axios
-        .get('https://us.nimiqpocket.com:5656/api/poolstats')
+        .get('https://api.nimiqpocket.com:8080/api/poolstats/us')
         .then(poolStats => {
           this.setState({
             isHeaderLoading: false,

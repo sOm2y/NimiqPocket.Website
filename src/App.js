@@ -162,6 +162,7 @@ class App extends Component {
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
+      devices:{},
       loadingBalance: false,
       activeKey: panes[0].key,
       panes,
@@ -177,13 +178,7 @@ class App extends Component {
         this.fetchBalance(walletAddress);
         this.setState({ walletAddress: walletAddress });
       }
-      axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
-        this.setState({
-          hk: hk.data,
 
-          isHKloading: false
-        });
-      });
       axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
         this.setState({
           pool: pool.data,
@@ -218,14 +213,6 @@ class App extends Component {
           isKRloading: true,
           isHKloading: true
         });
-        axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
-          this.setState({
-            hk: hk.data,
-
-            isHKloading: false
-          });
-        });
-
         axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
           this.setState({
             pool: pool.data,
@@ -269,7 +256,7 @@ class App extends Component {
       loadingBalance: true
     });
     axios
-      .get(`https://us.nimiqpocket.com:5656/api/balance/${address}`)
+      .get(`https://api.nimiqpocket.com:8080/api/device/${address}`)
       .then(res => {
         res.data.activeDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))
@@ -278,9 +265,21 @@ class App extends Component {
           isBalanceModalOpen: false,
           loadingBalance: false,
 
-          userBalance: res.data
+          devices: res.data
         });
         localStorage.setItem('walletAddress', address);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      axios
+      .get(`https://api.nimiqpocket.com:8080/api/balance/${address}`)
+      .then(res => {
+      
+        this.setState({
+          userBalance: res.data
+        });
+
       })
       .catch(err => {
         console.log(err);
@@ -410,11 +409,9 @@ class App extends Component {
                   onChange={this.onChangePoolAddress}
                   placeholder="Please select a pool close to you"
                 >
-                  <Option value="hk.nimiqpocket.com">
-                    hk.nimiqpocket.com (Hong Kong)
-                  </Option>
+    
                   <Option value="us.nimiqpocket.com">
-                    us.nimiqpocket.com( West US)
+                    us.nimiqpocket.com(US)
                   </Option>
                 </Select>
               </Col>
@@ -454,15 +451,7 @@ class App extends Component {
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
-                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <PoolStats
-                    loading={this.state.isHKloading}
-                    title={t('dashboard.hk')}
-                    flag={require('./assets/if_CN_167778.png')}
-                    pool={this.state.hk}
-                    poweredBy={require('./assets/azure.png')}
-                  />
-                </Col>
+          
 
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
@@ -482,6 +471,7 @@ class App extends Component {
               {this.state.userBalance && (
                 <Balance
                   userBalance={this.state.userBalance}
+                  devices={this.state.devices}
                   loadingBalance={this.state.loadingBalance}
                 />
               )}

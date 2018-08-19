@@ -102,7 +102,9 @@ div.ant-tabs-tab-active.ant-tabs-tab {
 .ant-tabs.ant-tabs-top.ant-tabs-line {
   padding-bottom: 30px;
 }
-
+.ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab{
+  color: #a553fe;  
+}
 .ant-tabs-bar {
   max-width: 1000px;
   margin: 0 auto;

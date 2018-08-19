@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import { Card, Spin, Icon, Table } from 'antd';
+import { Card, Spin, Tabs, Table } from 'antd';
 import axios from 'axios';
 import { translate, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
+const TabPane = Tabs.TabPane;
 class Balance extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
-  async componentDidMount() { }
+  async componentDidMount() {
+
+  }
   render() {
     const walletAddressColumn = [
       {
         title: 'DeviceId',
-        dataIndex: 'activeDeviceId',
-        key: 'activeDeviceId'
+        dataIndex: 'deviceId',
+        key: 'deviceId'
       },
       {
         title: 'Name',
@@ -42,20 +45,35 @@ class Balance extends Component {
         bordered={false}
         style={{ width: '85%' }}
       >
-        <Table
-          rowKey={record => record.activeDeviceId}
-          columns={walletAddressColumn}
-          dataSource={this.props.userBalance.activeDevices}
-          loading={this.props.loadingBalance}
-        />
+        <Tabs type="card">
+          <TabPane tab="Online Miners" key="1" >
+          <Table
+            rowKey={record => record.deviceId}
+            columns={walletAddressColumn}
+            dataSource={this.props.devices.activeDevices}
+            loading={this.props.loadingBalance}
+          /></TabPane>
+          <TabPane tab="Offline Miners" key="2">
+          <Table
+            rowKey={record => record.deviceId}
+            columns={walletAddressColumn}
+            dataSource={this.props.devices.inactiveDevices}
+            loading={this.props.loadingBalance}
+          /></TabPane>
+          <TabPane tab="Payout Transactions" key="3">
+            Coming soon
+          </TabPane>
+
+        </Tabs>
+
         <p>
           {t('balance.devices')} :{' '}
-          {this.props.userBalance.activeDevices &&
-            this.props.userBalance.totalActiveDevices}{' '}
+          {this.props.devices.activeDevices &&
+            this.props.devices.totalActiveDevices}{' '}
           |   {t('balance.total_hashrate')} :{' '}
-          {this.props.userBalance.activeDevices &&
+          {this.props.devices.activeDevices &&
             humanHashes(
-              this.props.userBalance.totalActiveDevicesHashrate
+              this.props.devices.totalActiveDevicesHashrate
             )}{' '}
         </p>
       </Card>

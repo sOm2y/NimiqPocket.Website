@@ -28,7 +28,7 @@ class CustomFooter extends Component {
   }
   async componentDidMount() {
     const [price] = await Promise.all([
-      axios.get('https://us.nimiqpocket.com:5656/api/price')
+      axios.get('https://api.nimiqpocket.com:8080/api/price')
     ]);
 
     this.setState({
