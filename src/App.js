@@ -31,6 +31,7 @@ import Blocks from './components/blocks';
 import WebMiner from './components/webMiner';
 import CustomFooter from './components/customFooter';
 import Faq from './components/faq';
+import { humanHashes } from './Helper/statsFormat';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -157,12 +158,12 @@ class App extends Component {
       pool: {},
       hk: {},
       eu: {},
-      us:{},
+      us: {},
       poolStats: {},
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
-      devices:{},
+      devices: {},
       loadingBalance: false,
       activeKey: panes[0].key,
       panes,
@@ -178,13 +179,13 @@ class App extends Component {
         this.fetchBalance(walletAddress);
         this.setState({ walletAddress: walletAddress });
       }
-      // axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
-      //   this.setState({
-      //     hk: hk.data,
+      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/sichi').then(hk => {
+        this.setState({
+          hk: hk.data,
 
-      //     isHKloading: false
-      //   });
-      // });
+          isHKloading: false
+        });
+      });
       // axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
       //   this.setState({
       //     pool: pool.data,
@@ -214,18 +215,18 @@ class App extends Component {
       notification.open(args);
 
       setInterval(() => {
-        // this.setState({
-        //   isUSloading: true,
-        //   isKRloading: true,
-        //   isHKloading: true
-        // });
-        // axios.get('https://hk.nimiqpocket.com:8444/').then(hk => {
-        //   this.setState({
-        //     hk: hk.data,
+        this.setState({
+          // isUSloading: true,
+          // isKRloading: true,
+          isHKloading: true
+        });
+        axios.get('https://api.nimiqpocket.com:8080/api/poolstats/sichi').then(hk => {
+          this.setState({
+            hk: hk.data,
 
-        //     isHKloading: false
-        //   });
-        // });
+            isHKloading: false
+          });
+        });
 
         // axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
         //   this.setState({
@@ -241,7 +242,7 @@ class App extends Component {
         //     isUSloading: false
         //   });
         // });
-      }, 1000 * 60 * 3);
+      }, 1000 * 60 * 1);
     } catch (e) {
       console.log(e);
     }
@@ -286,10 +287,10 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       });
-      axios
+    axios
       .get(`https://api.nimiqpocket.com:8080/api/balance/${address}`)
       .then(res => {
-     
+
         this.setState({
           userBalance: res.data
         });
@@ -475,17 +476,27 @@ class App extends Component {
                     pool={this.state.hk}
                     poweredBy={require('./assets/azure.png')}
                   />
-                </Col>
+                </Col> */}
 
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <PoolStats
-                    loading={this.state.isUSloading}
-                    title={t('dashboard.us_w')}
-                    flag={require('./assets/if_US_167805.png')}
-                    pool={this.state.pool}
-                    poweredBy={require('./assets/azure.png')}
-                  />
-                </Col> */}
+                  <Card
+                    title="矿池状态"
+
+                    bordered={false}
+                    style={{ width: '90%' }}
+                  >
+                     <p>
+                      私池算力 : <span> {humanHashes(this.state.hk.totalHashrate)} </span>{' '}
+                    </p>
+                    <p>
+                      矿机总数 : <span> {this.state.hk.totalClients} </span>{' '}
+                    </p>
+                    <p>
+                     已找到区块数: <span>{this.state.hk.totalBlocksMined} </span>
+                    </p>
+             
+                  </Card>
+                </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <NetworkStats />
                 </Col>
@@ -629,7 +640,7 @@ poolMining: {
           `}</pre>
               </Card>
 
-           
+
             </TabPane>
             <TabPane tab={t('faq.title')} key={this.state.panes[4].key}>
               <Faq />

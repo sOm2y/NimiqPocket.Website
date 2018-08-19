@@ -10,9 +10,9 @@ class HeaderStats extends Component {
     super(props);
     this.state = { poolStats: {}, isHeaderLoading: true };
   }
-  async componentDidMount() {
+  componentDidMount() {
     axios
-      .get('https://api.nimiqpocket.com:8080/api/poolstats/hk')
+      .get('https://api.nimiqpocket.com:8080/api/poolstats')
       .then(poolStats => {
         this.setState({
           isHeaderLoading: false,
@@ -25,14 +25,14 @@ class HeaderStats extends Component {
         isHeaderLoading: true
       });
       axios
-        .get('https://api.nimiqpocket.com:8080/api/poolstats/hk')
+        .get('https://api.nimiqpocket.com:8080/api/poolstats')
         .then(poolStats => {
           this.setState({
             isHeaderLoading: false,
             poolStats: poolStats.data
           });
         });
-    }, 1000 * 60 * 3);
+    }, 1000 * 60 * 1);
   }
 
   render() {
@@ -87,7 +87,7 @@ class HeaderStats extends Component {
           ) : (
             
             <p>
-              <div> 总算力 </div>
+              <p> 总算力 </p>
               <span> {humanHashes(this.state.poolStats.totalHashrate)}</span>
             </p>
           )}

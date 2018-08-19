@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Card, Spin, Tabs, Table } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import { translate, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const TabPane = Tabs.TabPane;
+
+moment.locale('zh-cn');
+
 class Balance extends Component {
   constructor(props) {
     super(props);
@@ -15,12 +19,12 @@ class Balance extends Component {
   render() {
     const walletAddressColumn = [
       {
-        title: 'DeviceId',
+        title: '矿机ID',
         dataIndex: 'deviceId',
         key: 'deviceId'
       },
       {
-        title: 'Name',
+        title: '矿机名称',
         dataIndex: 'deviceName'
       },
       {
@@ -30,7 +34,36 @@ class Balance extends Component {
       {
         title: '24Hr Hashrate',
         dataIndex: 'dayHashrate'
+      },
+      {
+        title: '上次更新',
+        dataIndex: 'lastUpdate',
+        render: lastUpdate => <a>{ moment(lastUpdate).fromNow()}</a>,
       }
+    ];
+    const offlineColumn = [
+      {
+        title: '矿机ID',
+        dataIndex: 'deviceId',
+        key: 'deviceId'
+      },
+      {
+        title: '矿机名称',
+        dataIndex: 'deviceName'
+      },
+      // {
+      //   title: 'Hashrate',
+      //   dataIndex: 'hashrate'
+      // },
+      // {
+      //   title: '24Hr Hashrate',
+      //   dataIndex: 'dayHashrate'
+      // },
+      // {
+      //   title: '上次更新',
+      //   dataIndex: 'lastUpdate',
+      //   render: lastUpdate => <a>{ moment(lastUpdate).fromNow()}</a>,
+      // }
     ];
 
     const { t, i18n } = this.props;
@@ -56,7 +89,7 @@ class Balance extends Component {
           <TabPane tab="掉线矿机" key="2">
           <Table
             rowKey={record => record.deviceId}
-            columns={walletAddressColumn}
+            columns={offlineColumn}
             dataSource={this.props.devices.inactiveDevices}
             loading={this.props.loadingBalance}
           /></TabPane>
