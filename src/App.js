@@ -179,7 +179,7 @@ class App extends Component {
         this.setState({ walletAddress: walletAddress });
       }
 
-      axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
+      axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
         this.setState({
           pool: pool.data,
 
@@ -213,7 +213,7 @@ class App extends Component {
           isKRloading: true,
           isHKloading: true
         });
-        axios.get('https://us.nimiqpocket.com:8444/').then(pool => {
+        axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
           this.setState({
             pool: pool.data,
 
@@ -456,10 +456,10 @@ class App extends Component {
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isUSloading}
-                    title={t('dashboard.us_w')}
+                    title="us.nimiqpocket.com:8444"
                     flag={require('./assets/if_US_167805.png')}
                     pool={this.state.pool}
-                    poweredBy={require('./assets/azure.png')}
+                    poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>

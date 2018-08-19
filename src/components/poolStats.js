@@ -46,17 +46,15 @@ class PoolStats extends Component {
         bordered={false}
         style={{ width: '90%' }}
       >
-        <p>
-          {' '}
-          <span>
-            {this.props.pool.poolName}:{this.props.pool.poolPort}
-          </span>
+
+        <p style={{marginBottom:'7px'}}>
+        {t('dashboard.hashrate')} : <span> {humanHashes(this.props.pool.totalHashrate)} </span>{' '}
         </p>
-        <p>
-        {t('dashboard.hashrate')} : <span> {humanHashes(this.props.pool.hashRate)} </span>{' '}
+        <p  style={{marginBottom:'7px'}}>
+        {t('dashboard.numClients')} : <span>{this.props.pool.totalClients} </span>
         </p>
-        <p>
-        {t('dashboard.numClients')} : <span>{this.props.pool.numClients} </span>
+        <p  style={{marginBottom:'7px'}}>
+         Total Users : <span>{this.props.pool.totalUsers} </span>
         </p>
         <img alt="" src={this.props.poweredBy} />
       </Card>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Spin, Tabs, Table } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 import { translate, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const TabPane = Tabs.TabPane;
@@ -30,6 +31,11 @@ class Balance extends Component {
       {
         title: '24Hr Hashrate',
         dataIndex: 'dayHashrate'
+      },
+      {
+        title: 'Last Update',
+        dataIndex: 'lastUpdate',
+        render: lastUpdate => <a>{ moment(lastUpdate).fromNow()}</a>,
       }
     ];
 

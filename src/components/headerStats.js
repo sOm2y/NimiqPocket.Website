@@ -12,7 +12,7 @@ class HeaderStats extends Component {
   }
   async componentDidMount() {
     axios
-      .get('https://api.nimiqpocket.com:8080/api/poolstats/us')
+      .get('https://api.nimiqpocket.com:8080/api/poolstats')
       .then(poolStats => {
         this.setState({
           isHeaderLoading: false,
@@ -25,14 +25,14 @@ class HeaderStats extends Component {
         isHeaderLoading: true
       });
       axios
-        .get('https://api.nimiqpocket.com:8080/api/poolstats/us')
+        .get('https://api.nimiqpocket.com:8080/api/poolstats')
         .then(poolStats => {
           this.setState({
             isHeaderLoading: false,
             poolStats: poolStats.data
           });
         });
-    }, 1000 * 60 * 3);
+    }, 1000 * 60 * 1);
   }
 
   render() {
@@ -79,7 +79,7 @@ class HeaderStats extends Component {
             src={require('../assets/nimiq_pokedex_logo.png')}
             alt=""
           />{' '}
-          NIMIQ POCKET <sup>BETA</sup>
+          NIMIQ POCKET <sup>Pool</sup>
         </div>
         <div className="header-stats">
           {this.state.isHeaderLoading ? (
@@ -91,7 +91,7 @@ class HeaderStats extends Component {
           )}
           {!this.state.isHeaderLoading && (
             <p>
-              {t('header.fee')} <span> {this.props.hk.poolFee} </span>% |{' '}
+              {t('header.fee')} <span> 1 </span>% |{' '}
               {t('header.found')}{' '}
               <span>{this.state.poolStats.totalBlocksMined}</span>
               {t('header.block')}
