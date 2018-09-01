@@ -60,7 +60,7 @@ class NetworkStats extends Component {
         {t('dashboard.network.height')} : <span>{this.state.networkStats.height} </span>
         </p>
         <p>
-        {t('dashboard.network.difficulty')} : <span>{this.state.networkStats.difficulty} </span>
+         Last Reward : <span>{this.state.networkStats.last_reward/100000} NIM </span>
         </p>
         <p>
           1KH/s: <span>{this.state.networkStats.nim_day_kh} NIM </span>  {t('dashboard.network.per_day')} 

@@ -227,7 +227,7 @@ class App extends Component {
         //     isUSloading: false
         //   });
         // });
-      }, 1000 * 60 * 3);
+      }, 1000 * 60 * 1);
     } catch (e) {
       console.log(e);
     }
