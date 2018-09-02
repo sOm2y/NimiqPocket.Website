@@ -51,59 +51,34 @@ const data = {
   linuxData: {
     intel: [
       {
-        title: 'Linux binary beta client - Skylake',
-        version: 'version 0.2.0',
+        title: 'Linux binary client - Skylake',
+        version: 'version 0.4.3',
         link: '/nimiqpocket-miner-linux-skylake-en.zip',
         logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
       },
       {
-        title: 'Linux binary beta client - Skylake Avx512',
-        version: 'version 0.2.0',
+        title: 'Linux binary client - Skylake Avx512',
+        version: 'version 0.4.3',
         link: '/nimiqpocket-miner-linux-skylake-avx512-en.zip',
         logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
       },
       {
-        title: 'Linux binary beta client - Broadwell',
-        version: 'version 0.2.0',
+        title: 'Linux binary client - Broadwell',
+        version: 'version 0.4.3',
         link: '/nimiqpocket-miner-linux-broadwell-en.zip',
         logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
       },
       {
-        title: 'Linux binary beta client - IvyBridge',
-        version: 'version 0.2.0',
+        title: 'Linux binary client - IvyBridge',
+        version: 'version 0.4.3',
         link: '/nimiqpocket-miner-linux-ivybridge-en.zip',
-        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-      },
-      {
-        title: 'Linux binary beta client - SandyBridge',
-        version: 'version 0.2.0',
-        link: '/nimiqpocket-miner-linux-sandybridge-en.zip',
-        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-      },
-
-      {
-        title: 'Linux中文客户端 - Skylake架构',
-        version: 'version 0.2.0-zhCN',
-        link: '/nimiqpocket-miner-linux-skylake-zh.zip',
-        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-      },
-      {
-        title: 'Linux中文客户端 - SandyBridge架构',
-        version: 'version 0.2.0-zhCN',
-        link: '/nimiqpocket-miner-linux-sandybridge-zh.zip',
-        logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-      },
-      {
-        title: 'Linux中文客户端 - IvyBridge架构',
-        version: 'version 0.2.0-zhCN',
-        link: '/nimiqpocket-miner-linux-ivybridge-zh.zip',
         logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
       }
     ],
     ryzen: [
       {
-        title: 'Linux binary beta client - Ryzen',
-        version: 'version 0.2.0',
+        title: 'Linux binary client - Ryzen',
+        version: 'version 0.4.3',
         link: '/nimiqpocket-miner-linux-ryzen-en.zip',
         logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
       }
@@ -111,7 +86,7 @@ const data = {
   },
   macData: [
     {
-      title: 'Mac binary beta client',
+      title: 'Mac binary client',
       version: 'Coming Soon',
       // link: '/nimiqpocket-mac-v0.0.1.zip',
       logo: require('./assets/if_apple-ios-system-platform-os-mac-linux_652586.png')
@@ -120,8 +95,20 @@ const data = {
   wslData: [
     {
       title: 'NIMIQ DESKTOP MINER ',
-      version: `version 0.3.0`,
+      version: `version 0.3.1`,
       link: 'https://nimiqdesktop.com/',
+      logo: require('./assets/if_windows_1296843.png')
+    },
+    {
+      title: 'Windows binary client - AVX',
+      version: `version 0.4.3`,
+      link: '/nimiqpocket-miner-win-avx-en.zip',
+      logo: require('./assets/if_windows_1296843.png')
+    },
+    {
+      title: 'Windows binary client - AVX2',
+      version: `version 0.4.3`,
+      link: '/nimiqpocket-miner-win-avx2-en.zip',
       logo: require('./assets/if_windows_1296843.png')
     }
   ],
@@ -199,9 +186,9 @@ class App extends Component {
       });
 
       const args = {
-        message: 'Update on 31st July 2018',
+        message: 'Mandatory miner update requires',
         description:
-          'Launched web miner and supported Ryzen and Intel broadwell/skylake-avx512',
+          'Due to NIMIQ network issue, please update your miner to v0.4.3 immediately, the old miner will not work any more.',
         duration: 10,
         icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />
       };
@@ -362,9 +349,8 @@ class App extends Component {
         <Content style={{ padding: '0 50px' }}>
           <Row
             style={{
-              width: '90%',
+              // width: '90%',
               position: 'relative',
-              height: '100%'
             }}
           >
             <Tooltip title="Click to type your wallet address">
@@ -594,12 +580,12 @@ class App extends Component {
                 style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
               >
                 <pre
-                >{`To connect, add '--pool=pool.nimiqpocket.com:8444' to your NodeJS miner command line, 
+                >{`To connect, add '--pool=us.nimiqpocket.com:8444' to your NodeJS miner command line, 
 or add the below to your config file:
 
 poolMining: {
    enabled: true,
-   host: 'pool.nimiqpocket.com',
+   host: 'us.nimiqpocket.com',
    port: 8444,
 }
           `}</pre>
