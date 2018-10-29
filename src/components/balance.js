@@ -75,11 +75,11 @@ class Balance extends Component {
         <p>
           {t('balance.devices')} :{' '}
           {this.props.devices.activeDevices &&
-            this.props.devices.totalActiveDevices}{' '}
+            this.props.devices.activeDevices.length}{' '}
           |   {t('balance.total_hashrate')} :{' '}
           {this.props.devices.activeDevices &&
             humanHashes(
-              this.props.devices.totalActiveDevicesHashrate
+              this.props.devices.totalHashrate
             )}{' '}
         </p>
       </Card>

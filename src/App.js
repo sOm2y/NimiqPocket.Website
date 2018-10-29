@@ -243,7 +243,7 @@ class App extends Component {
       loadingBalance: true
     });
     axios
-      .get(`https://api.nimiqpocket.com:8080/api/device/${address}`)
+      .get(`https://api.nimiqpocket.com:8080/api/device/active/${address}`)
       .then(res => {
         res.data.activeDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))

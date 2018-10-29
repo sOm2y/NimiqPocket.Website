@@ -103,7 +103,7 @@ class HeaderStats extends Component {
             <Trans i18nKey="header.auto_payout">
               Auto Payout: Every <span>1 </span> hour for confirmed balance over
             </Trans>
-            <span>10 </span> NIM
+            <span>50 </span> NIM
           </p>
         </div>
       </Header>
