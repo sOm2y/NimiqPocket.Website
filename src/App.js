@@ -31,6 +31,7 @@ import Blocks from './components/blocks';
 import WebMiner from './components/webMiner';
 import CustomFooter from './components/customFooter';
 import Faq from './components/faq';
+import MarketStats from './components/marketStats';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -144,12 +145,12 @@ class App extends Component {
       pool: {},
       hk: {},
       eu: {},
-      us:{},
+      us: {},
       poolStats: {},
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
-      devices:{},
+      devices: {},
       loadingBalance: false,
       activeKey: panes[0].key,
       panes,
@@ -166,20 +167,28 @@ class App extends Component {
         this.setState({ walletAddress: walletAddress });
       }
 
-      axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
-        this.setState({
-          pool: pool.data,
-
-          isUSloading: false
-        });
-      });
-      // axios.get('https://us.nimiqpocket.com:8444/').then(us => {
+      // axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
       //   this.setState({
-      //     us: us.data,
+      //     pool: pool.data,
 
       //     isUSloading: false
       //   });
       // });
+      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/us').then(us => {
+        this.setState({
+          us: us.data,
+
+          isUSloading: false
+        });
+      });
+
+      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/hk').then(hk => {
+        this.setState({
+          hk: hk.data,
+
+          isHKloading: false
+        });
+      });
 
       this.setState({
         currentListVersion: data.linuxData
@@ -259,10 +268,10 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       });
-      axios
+    axios
       .get(`https://api.nimiqpocket.com:8080/api/balance/${address}`)
       .then(res => {
-      
+
         this.setState({
           userBalance: res.data
         });
@@ -395,7 +404,7 @@ class App extends Component {
                   onChange={this.onChangePoolAddress}
                   placeholder="Please select a pool close to you"
                 >
-    
+
                   <Option value="us.nimiqpocket.com">
                     us.nimiqpocket.com(US)
                   </Option>
@@ -437,19 +446,33 @@ class App extends Component {
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
-          
+
 
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isUSloading}
                     title="us.nimiqpocket.com:8444"
                     flag={require('./assets/if_US_167805.png')}
-                    pool={this.state.pool}
+                    pool={this.state.us}
                     poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  <NetworkStats />
+                  <PoolStats
+                    loading={this.state.isHKloading}
+                    title="hk.nimiqpocket.com:8444"
+                    flag={require('./assets/if_CN_167778.png')}
+                    pool={this.state.hk}
+                    poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                <NetworkStats />
+                </Col>
+                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                  <MarketStats />
                 </Col>
               </Row>
             </TabPane>
@@ -591,7 +614,7 @@ poolMining: {
           `}</pre>
               </Card>
 
-           
+
             </TabPane>
             <TabPane tab={t('faq.title')} key={this.state.panes[4].key}>
               <Faq />

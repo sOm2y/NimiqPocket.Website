@@ -24,6 +24,18 @@
           "usd":"美元"
   
         }
+      },
+      "market":{
+        "title":"Nimiq市场",
+        "height":"高度",
+        "difficulty":"难度",
+        "per_day":" 每天",
+        "price":{
+          "title":"交易价",
+          "btc":"比特币",
+          "usd":"美元"
+  
+        }
       }
     },
     "balance":{

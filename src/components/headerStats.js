@@ -20,6 +20,7 @@ class HeaderStats extends Component {
           poolStats: poolStats.data
         });
       });
+      
 
     setInterval(() => {
       this.setState({
@@ -93,7 +94,7 @@ class HeaderStats extends Component {
           )}
           {!this.state.isHeaderLoading && (
             <p>
-              {t('header.fee')} <span> 1 </span>% |{' '}
+              {t('header.fee')} <span> 0 </span>% |{' '}
               {t('header.found')}{' '}
               <span>{this.state.poolStats.totalBlocksMined}</span>
               {t('header.block')}
@@ -103,7 +104,7 @@ class HeaderStats extends Component {
             <Trans i18nKey="header.auto_payout">
               Auto Payout: Every <span>1 </span> hour for confirmed balance over
             </Trans>
-            <span>50 </span> NIM
+            <span>10 </span> NIM
           </p>
         </div>
       </Header>

@@ -53,9 +53,9 @@ class PoolStats extends Component {
         <p  style={{marginBottom:'7px'}}>
         {t('dashboard.numClients')} : <span>{this.props.pool.totalClients} </span>
         </p>
-        <p  style={{marginBottom:'7px'}}>
+        {/* <p  style={{marginBottom:'7px'}}>
          Total Users : <span>{this.props.pool.totalUsers} </span>
-        </p>
+        </p> */}
         <img alt="" src={this.props.poweredBy} />
       </Card>
     );

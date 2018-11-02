@@ -14,7 +14,7 @@
     "hashrate":"Hashrate",
     "numClients": "Number of Miners",
     "network":{
-      "title":"Nimiq network stats",
+      "title":"Nimiq Network",
       "height":"Height",
       "difficulty":"Difficulty",
       "per_day":" per day",
@@ -24,6 +24,10 @@
         "usd":"USD"
 
       }
+    },
+    "market":{
+      "title":"Nimiq Market"
+     
     }
   },
   "balance":{
