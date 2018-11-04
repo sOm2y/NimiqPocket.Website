@@ -63,7 +63,7 @@ class Balance extends Component {
           <Table
             rowKey={record => record.deviceId}
             columns={walletAddressColumn}
-            dataSource={this.props.devices.inactiveDevices}
+            dataSource={this.props.inactiveDevices.inactiveDevices}
             loading={this.props.loadingBalance}
           /></TabPane>
           <TabPane tab="Payout Transactions" key="3">

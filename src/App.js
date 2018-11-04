@@ -209,20 +209,21 @@ class App extends Component {
           isKRloading: true,
           isHKloading: true
         });
-        axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
-          this.setState({
-            pool: pool.data,
+        axios.get('https://api.nimiqpocket.com:8080/api/poolstats/us').then(us => {
+        this.setState({
+          us: us.data,
 
-            isUSloading: false
-          });
+          isUSloading: false
         });
-        // axios.get('https://us.nimiqpocket.com:8444/').then(us => {
-        //   this.setState({
-        //     us: us.data,
+      });
 
-        //     isUSloading: false
-        //   });
-        // });
+      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/hk').then(hk => {
+        this.setState({
+          hk: hk.data,
+
+          isHKloading: false
+        });
+      });
       }, 1000 * 60 * 1);
     } catch (e) {
       console.log(e);
@@ -264,6 +265,21 @@ class App extends Component {
           devices: res.data
         });
         localStorage.setItem('walletAddress', address);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      axios
+      .get(`https://api.nimiqpocket.com:8080/api/device/inactive/${address}`)
+      .then(res => {
+        res.data.inactiveDevices.map(
+          device => (device.hashrate = this.humanHashes(device.hashrate))
+        );
+        this.setState({
+          isBalanceModalOpen: false,
+          loadingBalance: false,
+          inactiveDevices: res.data
+        });
       })
       .catch(err => {
         console.log(err);
@@ -481,6 +497,7 @@ class App extends Component {
                 <Balance
                   userBalance={this.state.userBalance}
                   devices={this.state.devices}
+                  inactiveDevices={this.state.inactiveDevices}
                   loadingBalance={this.state.loadingBalance}
                 />
               )}

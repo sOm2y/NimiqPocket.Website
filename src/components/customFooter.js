@@ -110,16 +110,7 @@ class CustomFooter extends Component {
                 target="_blank"
                 href="//shang.qq.com/wpa/qunwpa?idkey=9fbcea0108f94f02aa4633e9fdd651a4f36807eb804db57029c26a5e87cafc79"
               >
-                <img
-                  style={{
-                    top: -3,
-                    position: 'relative'
-                  }}
-                  border="0"
-                  src="//pub.idqqimg.com/wpa/images/group.png"
-                  alt="Nimiq口袋"
-                  title="Nimiq口袋 649287531"
-                />
+               QQ: 649287531
               </a>
             </Col>
           </Row>
