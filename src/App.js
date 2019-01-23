@@ -32,6 +32,7 @@ import WebMiner from './components/webMiner';
 import CustomFooter from './components/customFooter';
 import Faq from './components/faq';
 import MarketStats from './components/marketStats';
+import GenerateScript from './components/forms/generateScript';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -151,6 +152,7 @@ class App extends Component {
       isBalanceModalOpen: false,
       userBalance: {},
       devices: {},
+      inactiveDevices: {},
       loadingBalance: false,
       activeKey: panes[0].key,
       panes,
@@ -210,20 +212,20 @@ class App extends Component {
           isHKloading: true
         });
         axios.get('https://api.nimiqpocket.com:8080/api/poolstats/us').then(us => {
-        this.setState({
-          us: us.data,
+          this.setState({
+            us: us.data,
 
-          isUSloading: false
+            isUSloading: false
+          });
         });
-      });
 
-      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/hk').then(hk => {
-        this.setState({
-          hk: hk.data,
+        axios.get('https://api.nimiqpocket.com:8080/api/poolstats/hk').then(hk => {
+          this.setState({
+            hk: hk.data,
 
-          isHKloading: false
+            isHKloading: false
+          });
         });
-      });
       }, 1000 * 60 * 1);
     } catch (e) {
       console.log(e);
@@ -269,7 +271,7 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       });
-      axios
+    axios
       .get(`https://api.nimiqpocket.com:8080/api/device/inactive/${address}`)
       .then(res => {
         res.data.inactiveDevices.map(
@@ -459,11 +461,11 @@ class App extends Component {
               }}
             />
           </Modal>
+
+          
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
-
-
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isUSloading}
@@ -485,7 +487,7 @@ class App extends Component {
               </Row>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                <NetworkStats />
+                  <NetworkStats />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <MarketStats />
@@ -637,6 +639,20 @@ poolMining: {
               <Faq />
             </TabPane>
           </Tabs>
+          <Row
+            style={{
+     
+            }}
+          >
+            <Collapse>
+              <Panel
+                header={"Linux Script —— One command for deploying on cloud"}
+                key="1"
+                style={customPanelStyle}
+              ><GenerateScript /></Panel>
+            </Collapse>
+
+          </Row>
         </Content>
         <CustomFooter />
       </Layout>
