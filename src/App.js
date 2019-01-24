@@ -151,8 +151,9 @@ class App extends Component {
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
+      payouts:[],
       devices: {},
-      inactiveDevices: {},
+      inactiveDevices: [],
       loadingBalance: false,
       activeKey: panes[0].key,
       panes,
@@ -292,6 +293,19 @@ class App extends Component {
 
         this.setState({
           userBalance: res.data
+        });
+
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+      axios
+      .get(`https://api.nimiqpocket.com:8080/api/payouts/${address}`)
+      .then(res => {
+
+        this.setState({
+          payouts: res.data
         });
 
       })

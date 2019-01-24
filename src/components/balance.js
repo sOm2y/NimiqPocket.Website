@@ -39,6 +39,31 @@ class Balance extends Component {
       }
     ];
 
+    const payoutsColumn = [
+      {
+        title: 'DeviceId',
+        dataIndex: 'deviceId',
+        key: 'deviceId'
+      },
+      {
+        title: 'Name',
+        dataIndex: 'deviceName'
+      },
+      {
+        title: 'Hashrate',
+        dataIndex: 'hashrate'
+      },
+      {
+        title: '24Hr Hashrate',
+        dataIndex: 'dayHashrate'
+      },
+      {
+        title: 'Last Update',
+        dataIndex: 'lastUpdate',
+        render: lastUpdate => <a>{ moment(lastUpdate).fromNow()}</a>,
+      }
+    ];
+
     const { t, i18n } = this.props;
 
     const changeLanguage = (lng) => {
@@ -67,7 +92,12 @@ class Balance extends Component {
             loading={this.props.loadingBalance}
           /></TabPane>
           <TabPane tab="Payout Transactions" key="3">
-            Coming soon
+          <Table
+            rowKey={record => record.deviceId}
+            columns={walletAddressColumn}
+            dataSource={this.props.payouts.payouts}
+            loading={this.props.loadingBalance}
+          /></TabPane>
           </TabPane>
 
         </Tabs>
