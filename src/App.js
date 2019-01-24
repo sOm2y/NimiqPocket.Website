@@ -198,9 +198,9 @@ class App extends Component {
       });
 
       const args = {
-        message: 'Mandatory miner update requires',
+        message: 'GPU MINER HAS RELEASED',
         description:
-          'Due to NIMIQ network issue, please update your miner to v0.4.3 immediately, the old miner will not work any more.',
+      `A community member has release GPU miner suits for Nvidia Graph cards, it charges 2% as dev fee. https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases`,
         duration: 10,
         icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />
       };
@@ -301,7 +301,7 @@ class App extends Component {
       });
 
       axios
-      .get(`https://api.nimiqpocket.com:8080/api/payouts/${address}`)
+      .get(`https://api.nimiqpocket.com:8080/api/payout/${address}`)
       .then(res => {
 
         this.setState({
@@ -514,6 +514,7 @@ class App extends Component {
                   userBalance={this.state.userBalance}
                   devices={this.state.devices}
                   inactiveDevices={this.state.inactiveDevices}
+                  payouts={this.state.payouts}
                   loadingBalance={this.state.loadingBalance}
                 />
               )}
@@ -653,7 +654,7 @@ poolMining: {
               <Faq />
             </TabPane>
           </Tabs>
-          <Row
+          {/* <Row
             style={{
      
             }}
@@ -666,7 +667,7 @@ poolMining: {
               ><GenerateScript /></Panel>
             </Collapse>
 
-          </Row>
+          </Row> */}
         </Content>
         <CustomFooter />
       </Layout>

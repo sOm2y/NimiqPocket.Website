@@ -41,26 +41,19 @@ class Balance extends Component {
 
     const payoutsColumn = [
       {
-        title: 'DeviceId',
-        dataIndex: 'deviceId',
-        key: 'deviceId'
+        title: 'Date',
+        dataIndex: 'datetime',
+        render: datetime =>  moment(datetime).format('Do MMMM YYYY, h:mm:ss a')
       },
       {
-        title: 'Name',
-        dataIndex: 'deviceName'
+        title: 'Amount',
+        dataIndex: 'amount',
+        render: amount => `${amount/100000} NIM`
       },
       {
-        title: 'Hashrate',
-        dataIndex: 'hashrate'
-      },
-      {
-        title: '24Hr Hashrate',
-        dataIndex: 'dayHashrate'
-      },
-      {
-        title: 'Last Update',
-        dataIndex: 'lastUpdate',
-        render: lastUpdate => <a>{ moment(lastUpdate).fromNow()}</a>,
+        title: 'Transaction',
+        dataIndex: 'transaction',
+        render: transaction => <a href={`https://nimiq.watch/#${transaction}`} target='_blank'>{transaction}</a>,
       }
     ];
 
@@ -93,11 +86,11 @@ class Balance extends Component {
           /></TabPane>
           <TabPane tab="Payout Transactions" key="3">
           <Table
-            rowKey={record => record.deviceId}
-            columns={walletAddressColumn}
+            rowKey={record => record.transaction}
+            columns={payoutsColumn}
             dataSource={this.props.payouts.payouts}
             loading={this.props.loadingBalance}
-          /></TabPane>
+          />
           </TabPane>
 
         </Tabs>
