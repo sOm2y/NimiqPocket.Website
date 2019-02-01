@@ -56,7 +56,8 @@ class PoolStats extends Component {
         {/* <p  style={{marginBottom:'7px'}}>
          Total Users : <span>{this.props.pool.totalUsers} </span>
         </p> */}
-        <img alt="" src={this.props.poweredBy} />
+        {this.props.children}
+        <img style={{paddingTop:'30px'}} alt="" src={this.props.poweredBy} />
       </Card>
     );
   }

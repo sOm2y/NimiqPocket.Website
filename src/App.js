@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { translate, Trans } from 'react-i18next';
+import React, { Component } from 'react'
+import { translate, Trans } from 'react-i18next'
 import {
   Button,
   Spin,
@@ -20,26 +20,38 @@ import {
   Collapse,
   Select,
   notification
-} from 'antd';
-import axios from 'axios';
-import './App.css';
-import NetworkStats from './components/networkStats';
-import PoolStats from './components/poolStats';
-import HeaderStats from './components/headerStats';
-import Balance from './components/balance';
-import Blocks from './components/blocks';
-import WebMiner from './components/webMiner';
-import CustomFooter from './components/customFooter';
-import Faq from './components/faq';
-import MarketStats from './components/marketStats';
-import GenerateScript from './components/forms/generateScript';
+} from 'antd'
+import {
+  ChartCard,
+  Field,
+  MiniArea,
+  MiniBar,
+  MiniProgress
+} from 'ant-design-pro/lib/Charts'
+import Trend from 'ant-design-pro/lib/Trend'
+import NumberInfo from 'ant-design-pro/lib/NumberInfo'
+import numeral from 'numeral'
+import moment from 'moment'
 
-const { Option } = Select;
-const TabPane = Tabs.TabPane;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
-const Search = Input.Search;
-const Panel = Collapse.Panel;
+import axios from 'axios'
+import './App.css'
+import NetworkStats from './components/networkStats'
+import PoolStats from './components/poolStats'
+import HeaderStats from './components/headerStats'
+import Balance from './components/balance'
+import Blocks from './components/blocks'
+import WebMiner from './components/webMiner'
+import CustomFooter from './components/customFooter'
+import Faq from './components/faq'
+import MarketStats from './components/marketStats'
+import GenerateScript from './components/forms/generateScript'
+
+const { Option } = Select
+const TabPane = Tabs.TabPane
+const RadioButton = Radio.Button
+const RadioGroup = Radio.Group
+const Search = Input.Search
+const Panel = Collapse.Panel
 
 const customPanelStyle = {
   background: '#f7f7f7',
@@ -47,7 +59,18 @@ const customPanelStyle = {
   marginBottom: 24,
   border: 0,
   overflow: 'hidden'
-};
+}
+
+const visitData = []
+const beginDay = new Date().getTime()
+for (let i = 0; i < 20; i += 1) {
+  visitData.push({
+    x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format(
+      'YYYY-MM-DD'
+    ),
+    y: Math.floor(Math.random() * 100) + 10
+  })
+}
 
 const data = {
   linuxData: {
@@ -126,7 +149,7 @@ const data = {
       logo: require('./assets/if_android_1269841.png')
     }
   ]
-};
+}
 
 const panes = [
   { key: '1' },
@@ -134,15 +157,17 @@ const panes = [
   { key: '3' },
   { key: '4' },
   { key: '5' }
-];
+]
 
 class App extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       isUSloading: true,
       isKRloading: true,
       isHKloading: true,
+      usCache: {},
+      hkCache: {},
       pool: {},
       hk: {},
       eu: {},
@@ -151,7 +176,7 @@ class App extends Component {
       currentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
-      payouts:[],
+      payouts: [],
       devices: {},
       inactiveDevices: [],
       loadingBalance: false,
@@ -160,15 +185,31 @@ class App extends Component {
       visible: false,
       walletAddress: '',
       poolAddress: 'us.nimiqpocket.com'
-    };
+    }
   }
   async componentDidMount() {
     try {
-      const walletAddress = localStorage.getItem('walletAddress');
+      const walletAddress = localStorage.getItem('walletAddress')
       if (walletAddress) {
-        this.fetchBalance(walletAddress);
-        this.setState({ walletAddress: walletAddress });
+        this.fetchBalance(walletAddress)
+        this.setState({ walletAddress: walletAddress })
       }
+
+      axios.get('https://api.nimiqpocket.com:8080/api/cache/us').then(pool => {
+        this.setState({
+          usCache: pool.data
+
+          // isUSloading: false
+        })
+      })
+
+      axios.get('https://api.nimiqpocket.com:8080/api/cache/hk').then(pool => {
+        this.setState({
+          hkCache: pool.data
+
+          // isUSloading: false
+        })
+      })
 
       // axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
       //   this.setState({
@@ -177,213 +218,207 @@ class App extends Component {
       //     isUSloading: false
       //   });
       // });
-      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/us').then(us => {
-        this.setState({
-          us: us.data,
+      axios
+        .get('https://api.nimiqpocket.com:8080/api/poolstats/us')
+        .then(us => {
+          this.setState({
+            us: us.data,
 
-          isUSloading: false
-        });
-      });
+            isUSloading: false
+          })
+        })
 
-      axios.get('https://api.nimiqpocket.com:8080/api/poolstats/hk').then(hk => {
-        this.setState({
-          hk: hk.data,
+      axios
+        .get('https://api.nimiqpocket.com:8080/api/poolstats/hk')
+        .then(hk => {
+          this.setState({
+            hk: hk.data,
 
-          isHKloading: false
-        });
-      });
+            isHKloading: false
+          })
+        })
 
       this.setState({
         currentListVersion: data.linuxData
-      });
+      })
 
       const args = {
         message: 'GPU MINER HAS RELEASED',
-        description:
-      `A community member has release GPU miner suits for Nvidia Graph cards, it charges 2% as dev fee. https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases`,
+        description: `A community member has release GPU miner suits for Nvidia Graph cards, it charges 2% as dev fee. https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases`,
         duration: 10,
         icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />
-      };
-      notification.open(args);
+      }
+      notification.open(args)
 
       setInterval(() => {
         this.setState({
           isUSloading: true,
           isKRloading: true,
           isHKloading: true
-        });
-        axios.get('https://api.nimiqpocket.com:8080/api/poolstats/us').then(us => {
-          this.setState({
-            us: us.data,
+        })
+        axios
+          .get('https://api.nimiqpocket.com:8080/api/poolstats/us')
+          .then(us => {
+            this.setState({
+              us: us.data,
 
-            isUSloading: false
-          });
-        });
+              isUSloading: false
+            })
+          })
 
-        axios.get('https://api.nimiqpocket.com:8080/api/poolstats/hk').then(hk => {
-          this.setState({
-            hk: hk.data,
+        axios
+          .get('https://api.nimiqpocket.com:8080/api/poolstats/hk')
+          .then(hk => {
+            this.setState({
+              hk: hk.data,
 
-            isHKloading: false
-          });
-        });
-      }, 1000 * 60 * 1);
+              isHKloading: false
+            })
+          })
+      }, 1000 * 60 * 1)
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
   showCurrentVersionData = (e, data) => {
     if (e.target.value === 'linux') {
-      this.setState({ currentListVersion: data.linuxData });
+      this.setState({ currentListVersion: data.linuxData })
     } else if (e.target.value === 'mac') {
-      this.setState({ currentListVersion: data.macData });
+      this.setState({ currentListVersion: data.macData })
     } else if (e.target.value === 'wsl') {
-      this.setState({ currentListVersion: data.wslData });
+      this.setState({ currentListVersion: data.wslData })
     } else if (e.target.value === 'android') {
-      this.setState({ currentListVersion: data.androidData });
+      this.setState({ currentListVersion: data.androidData })
     }
-  };
+  }
 
   showBalanceModal = () => {
     this.setState({
       isBalanceModalOpen: true
-    });
-  };
+    })
+  }
 
   fetchBalance = address => {
     this.setState({
       loadingBalance: true
-    });
+    })
     axios
       .get(`https://api.nimiqpocket.com:8080/api/device/active/${address}`)
       .then(res => {
         res.data.activeDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))
-        );
+        )
         this.setState({
           isBalanceModalOpen: false,
           loadingBalance: false,
 
           devices: res.data
-        });
-        localStorage.setItem('walletAddress', address);
+        })
+        localStorage.setItem('walletAddress', address)
       })
       .catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
     axios
       .get(`https://api.nimiqpocket.com:8080/api/device/inactive/${address}`)
       .then(res => {
         res.data.inactiveDevices.map(
           device => (device.hashrate = this.humanHashes(device.hashrate))
-        );
+        )
         this.setState({
           isBalanceModalOpen: false,
           loadingBalance: false,
           inactiveDevices: res.data
-        });
+        })
       })
       .catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
     axios
       .get(`https://api.nimiqpocket.com:8080/api/balance/${address}`)
       .then(res => {
-
         this.setState({
           userBalance: res.data
-        });
-
+        })
       })
       .catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
 
-      axios
+    axios
       .get(`https://api.nimiqpocket.com:8080/api/payout/${address}`)
       .then(res => {
-
         this.setState({
           payouts: res.data
-        });
-
+        })
       })
       .catch(err => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
   closeBalanceModal = e => {
-    console.log(e);
+    console.log(e)
     this.setState({
       isBalanceModalOpen: false
-    });
-  };
+    })
+  }
 
   humanHashes = bytes => {
-    let thresh = 1000;
+    let thresh = 1000
     if (Math.abs(bytes) < thresh) {
-      return bytes + ' H/s';
+      return bytes + ' H/s'
     }
-    let units = [
-      'kH/s',
-      'MH/s',
-      'GH/s',
-      'TH/s',
-      'PH/s',
-      'EH/s',
-      'ZH/s',
-      'YH/s'
-    ];
-    let u = -1;
+    let units = ['kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s', 'ZH/s', 'YH/s']
+    let u = -1
     do {
-      bytes /= thresh;
-      ++u;
-    } while (Math.abs(bytes) >= thresh && u < units.length - 1);
-    return bytes.toFixed(1) + ' ' + units[u];
-  };
+      bytes /= thresh
+      ++u
+    } while (Math.abs(bytes) >= thresh && u < units.length - 1)
+    return bytes.toFixed(1) + ' ' + units[u]
+  }
 
   onTabChange = activeKey => {
-    this.setState({ activeKey });
-  };
+    this.setState({ activeKey })
+  }
 
   getUserTotalHashrate(devices) {
-    let totalHashrate = 0;
+    let totalHashrate = 0
     devices.map(device => {
-      totalHashrate = +device.hashrate;
-    });
-    return this.humanHashes(totalHashrate);
+      totalHashrate = +device.hashrate
+    })
+    return this.humanHashes(totalHashrate)
   }
 
   showDrawer = () => {
     this.setState({
       visible: true
-    });
-  };
+    })
+  }
 
   onClose = () => {
     this.setState({
       visible: false
-    });
-  };
+    })
+  }
 
   onChangeWalletAddress = e => {
-    const { value } = e.target;
-    this.setState({ walletAddress: value });
-    console.log(this.state.walletAddress);
-  };
+    const { value } = e.target
+    this.setState({ walletAddress: value })
+    console.log(this.state.walletAddress)
+  }
   onChangePoolAddress = poolAddress => {
-    this.setState({ poolAddress });
-    console.log(poolAddress, this.state.poolAddress);
-  };
+    this.setState({ poolAddress })
+    console.log(poolAddress, this.state.poolAddress)
+  }
   render() {
-    const { Header, Content, Footer } = Layout;
-    const { t, i18n } = this.props;
+    const { Header, Content, Footer } = Layout
+    const { t, i18n } = this.props
 
     const changeLanguage = lng => {
-      i18n.changeLanguage(lng);
-    };
+      i18n.changeLanguage(lng)
+    }
     return (
       <Layout className="layout">
         <HeaderStats hk={this.state.hk} />
@@ -391,7 +426,7 @@ class App extends Component {
           <Row
             style={{
               // width: '90%',
-              position: 'relative',
+              position: 'relative'
             }}
           >
             <Tooltip title="Click to type your wallet address">
@@ -436,7 +471,6 @@ class App extends Component {
                   onChange={this.onChangePoolAddress}
                   placeholder="Please select a pool close to you"
                 >
-
                   <Option value="us.nimiqpocket.com">
                     us.nimiqpocket.com(US)
                   </Option>
@@ -470,24 +504,31 @@ class App extends Component {
               enterButton="Search"
               size="large"
               onSearch={address => {
-                this.fetchBalance(address);
-                this.setState({ activeKey: '2' });
+                this.fetchBalance(address)
+                this.setState({ activeKey: '2' })
               }}
             />
           </Modal>
 
-          
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                  
                   <PoolStats
                     loading={this.state.isUSloading}
                     title="us.nimiqpocket.com:8444"
                     flag={require('./assets/if_US_167805.png')}
                     pool={this.state.us}
                     poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
-                  />
+                  >
+                    <MiniArea
+                      line
+                      height={40}
+                      data={this.state.usCache.hashrate}
+                    />
+                          {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
+                  </PoolStats>
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
@@ -496,7 +537,14 @@ class App extends Component {
                     flag={require('./assets/if_CN_167778.png')}
                     pool={this.state.hk}
                     poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
-                  />
+                  >
+                   <MiniArea
+                      line
+                      height={40}
+                      data={this.state.hkCache.hashrate}
+                    />
+                       {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
+                  </PoolStats>
                 </Col>
               </Row>
               <Row>
@@ -530,7 +578,7 @@ class App extends Component {
               >
                 <RadioGroup
                   onChange={e => {
-                    this.showCurrentVersionData(e, data);
+                    this.showCurrentVersionData(e, data)
                   }}
                   defaultValue="linux"
                 >
@@ -636,8 +684,7 @@ class App extends Component {
                 bordered={false}
                 style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
               >
-                <pre
-                >{`To connect, add '--pool=us.nimiqpocket.com:8444' to your NodeJS miner command line, 
+                <pre>{`To connect, add '--pool=us.nimiqpocket.com:8444' to your NodeJS miner command line, 
 or add the below to your config file:
 
 poolMining: {
@@ -647,8 +694,6 @@ poolMining: {
 }
           `}</pre>
               </Card>
-
-
             </TabPane>
             <TabPane tab={t('faq.title')} key={this.state.panes[4].key}>
               <Faq />
@@ -671,8 +716,8 @@ poolMining: {
         </Content>
         <CustomFooter />
       </Layout>
-    );
+    )
   }
 }
 
-export default translate('translations')(App);
+export default translate('translations')(App)

@@ -92,6 +92,9 @@ class Balance extends Component {
             loading={this.props.loadingBalance}
           />
           </TabPane>
+          <TabPane tab="Statistics" key="4">
+            COMING SOON
+          </TabPane>
 
         </Tabs>
 
