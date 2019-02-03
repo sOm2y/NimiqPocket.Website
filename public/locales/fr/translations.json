@@ -1,0 +1,48 @@
+{
+    "header": {
+      "fee": "frais",
+      "found": "Trouvé",
+      "block": "Block",
+      "auto_payout":"Paiement automatique : toutes les  <span>1 </span> heures si solde confirmé",
+      "pool_address":"Adresse de la pool"
+    },
+  "dashboard":{
+      "title":"DASHBOARD",
+      "hk":"HONG KONG",
+      "sk":"PAYS-BAS",
+      "us_w":"US",
+      "hashrate":"Hashrate",
+      "numClients": "Nombre de mineurs",
+      "network":{
+        "title":"Réseau nimiq",
+        "height":"Taille",
+        "difficulty":"Difficulté",
+        "per_day":" par jour",
+        "price":{
+          "title":"Prix du marché",
+          "btc":"BTC",
+          "usd":"USD"
+  
+        }
+      },
+  "market":{
+        "title":"Marché Nimiq"
+  
+      }
+    },
+  "balance":{
+      "title":"SOLDE",
+      "unpaid":"Solde non payé",
+      "devices":"Tous les appareils",
+      "total_hashrate":"Hashrate total"
+    },
+  "blocks":{
+      "title": "BLOCS"
+    },
+    "connect":{
+      "title":"CONNEXION"
+    },
+    "faq":{
+      "title":"FAQ"
+    }
+  }

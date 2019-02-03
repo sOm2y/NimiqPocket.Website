@@ -72,6 +72,13 @@ class HeaderStats extends Component {
               style={{ width: 30 }}
             />
           </Option>
+          <Option value="fr">
+            <img
+              alt=""
+              src={require('../assets//france.png')}
+              style={{ width: 30 }}
+            />
+          </Option>
         </Select>
         <div className="header-logo">
           <img
