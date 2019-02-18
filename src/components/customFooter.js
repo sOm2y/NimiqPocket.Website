@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Spin, Row, Layout, Col, Icon, Menu, Dropdown, Button } from 'antd';
 import axios from 'axios';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const { Header, Content, Footer } = Layout;
 const menu = (
@@ -119,4 +119,4 @@ class CustomFooter extends Component {
     );
   }
 }
-export default translate('translations')(CustomFooter);
+export default withTranslation('translations')(CustomFooter);

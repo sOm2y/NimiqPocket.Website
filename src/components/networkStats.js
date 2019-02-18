@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Spin, Icon } from 'antd';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import axios from 'axios';
 import { humanHashes } from '../Helper/statsFormat';
 class NetworkStats extends Component {
@@ -70,4 +70,4 @@ class NetworkStats extends Component {
     );
   }
 }
-export default translate('translations')(NetworkStats);
+export default withTranslation('translations')(NetworkStats);

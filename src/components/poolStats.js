@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Spin, Icon } from 'antd';
 import axios from 'axios';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 class PoolStats extends Component {
   constructor(props) {
@@ -62,4 +62,4 @@ class PoolStats extends Component {
     );
   }
 }
-export default translate('translations')(PoolStats);
+export default withTranslation('translations')(PoolStats);

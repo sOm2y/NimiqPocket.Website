@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Icon, List, BackTop, Button, Spin, Radio, Row } from 'antd';
 import axios from 'axios';
 import { getTransactionsData } from '../services/service';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import moment from 'moment';
 import { humanHashes } from '../Helper/statsFormat';
 class blocks extends Component {
@@ -229,4 +229,4 @@ class blocks extends Component {
     );
   }
 }
-export default translate('translations')(blocks);
+export default withTranslation('translations')(blocks);

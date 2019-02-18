@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Spin, Icon, Table, Collapse } from 'antd';
 import axios from 'axios';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const Panel = Collapse.Panel;
 const pplns = `
@@ -45,4 +45,4 @@ class Faq extends Component {
     );
   }
 }
-export default translate('translations')(Faq);
+export default withTranslation('translations')(Faq);

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Card, Spin, Icon } from "antd";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import axios from "axios";
 import CurrencyFormat from "react-currency-format";
 import { humanHashes } from "../Helper/statsFormat";
@@ -111,4 +111,4 @@ class MarketStats extends Component {
     );
   }
 }
-export default translate("translations")(MarketStats);
+export default withTranslation("translations")(MarketStats);

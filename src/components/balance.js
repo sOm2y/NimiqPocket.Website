@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Spin, Tabs, Table } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const TabPane = Tabs.TabPane;
 class Balance extends Component {
@@ -112,4 +112,4 @@ class Balance extends Component {
     );
   }
 }
-export default translate('translations')(Balance);
+export default withTranslation('translations')(Balance);

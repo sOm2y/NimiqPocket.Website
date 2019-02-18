@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { translate, Trans } from 'react-i18next'
+import { withTranslation, Trans } from 'react-i18next'
 import {
   Button,
   Spin,
@@ -720,4 +720,4 @@ poolMining: {
   }
 }
 
-export default translate('translations')(App)
+export default withTranslation('translations')(App)

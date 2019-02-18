@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Spin, Layout, Select } from 'antd';
 import axios from 'axios';
 import { humanHashes } from '../Helper/statsFormat';
-import { translate, Trans } from 'react-i18next';
+import { withTranslation, Trans } from 'react-i18next';
 import GaugeTick from '../components/charts/speed';
 const Option = Select.Option;
 
@@ -118,4 +118,4 @@ class HeaderStats extends Component {
     );
   }
 }
-export default translate('translations')(HeaderStats);
+export default withTranslation('translations')(HeaderStats);
