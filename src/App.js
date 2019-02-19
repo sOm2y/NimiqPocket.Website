@@ -71,6 +71,20 @@ for (let i = 0; i < 20; i += 1) {
     y: Math.floor(Math.random() * 100) + 10
   })
 }
+const GPUData ={
+  intel: [
+    {
+      title: 'Nimiqpocket GPU miner - Windows',
+      version: 'version 1.0.0',
+      link: '/nimiqpocket-amd-1.0.0.zip',
+      logo: require('./assets/if_windows_1296843.png')
+    },{
+      title: 'Nimiqpocket GPU miner - Linux',
+      version: 'COMINING SOON',
+      link: '',
+      logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
+    }]
+}
 
 const data = {
   linuxData: {
@@ -174,6 +188,7 @@ class App extends Component {
       us: {},
       poolStats: {},
       currentListVersion: [],
+      gpuCurrentListVersion: [],
       isBalanceModalOpen: false,
       userBalance: {},
       payouts: [],
@@ -239,7 +254,8 @@ class App extends Component {
         })
 
       this.setState({
-        currentListVersion: data.linuxData
+        currentListVersion: data.linuxData,
+        gpuCurrentListVersion: GPUData
       })
 
       const args = {
@@ -290,6 +306,15 @@ class App extends Component {
       this.setState({ currentListVersion: data.wslData })
     } else if (e.target.value === 'android') {
       this.setState({ currentListVersion: data.androidData })
+    }
+  }
+
+  showGPUCurrentVersionData = (e, data) => {
+    if (e.target.value === 'linux') {
+      this.setState({ gpuCurrentListVersion: data.linuxData })
+  
+    } else if (e.target.value === 'wsl') {
+      this.setState({ gpuCurrentListVersion: data.wslData })
     }
   }
 
@@ -571,8 +596,39 @@ class App extends Component {
               <Blocks />
             </TabPane>
             <TabPane tab={t('connect.title')} key={this.state.panes[3].key}>
+            <Card
+                title="CONNECT WITH NIMIQPOCKET GPU MINER"
+                bordered={false}
+                style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
+              >
+         
+                <List
+                  size="large"
+                  dataSource={this.state.gpuCurrentListVersion.intel}
+                  renderItem={item => (
+                    <List.Item
+                      actions={[
+                        item.link && (
+                          <a href={item.link} target="_blank" download>
+                            {' '}
+                            <Button type="primary">Download</Button>
+                          </a>
+                        )
+                      ]}
+                    >
+                      <List.Item.Meta
+                        avatar={<Avatar src={item.logo} />}
+                        title={item.title}
+                        description={item.version}
+                      />
+                    </List.Item>
+                  )}
+                />
+                
+
+              </Card>
               <Card
-                title="CONNECT WITH NIMIQPOCKET MINER"
+                title="CONNECT WITH NIMIQPOCKET CPU MINER"
                 bordered={false}
                 style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
               >
