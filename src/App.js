@@ -74,9 +74,9 @@ for (let i = 0; i < 20; i += 1) {
 const GPUData ={
   intel: [
     {
-      title: 'Nimiqpocket GPU miner - Windows',
-      version: 'version 1.0.0',
-      link: '/nimiqpocket-amd-1.0.0.zip',
+      title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
+      version: 'version 1.1.0',
+      link: '/nimiqpocket-gpu-win-1.1.0.zip',
       logo: require('./assets/if_windows_1296843.png')
     },{
       title: 'Nimiqpocket GPU miner - Linux',

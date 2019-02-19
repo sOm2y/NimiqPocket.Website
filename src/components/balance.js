@@ -8,10 +8,15 @@ const TabPane = Tabs.TabPane;
 class Balance extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      walletAddress:''
+    };
   }
   async componentDidMount() {
-
+    const walletAddress = localStorage.getItem('walletAddress')
+    if (walletAddress) {
+      this.setState({ walletAddress: walletAddress })
+    }
   }
   render() {
     const walletAddressColumn = [
@@ -65,7 +70,7 @@ class Balance extends Component {
 
     return (
       <Card
-        title={`${t('balance.unpaid')} : ${this.props.userBalance.balance / 100000} NIM`}
+        title={`${t('balance.unpaid')} : ${this.props.userBalance.balance / 100000} NIM | Wallet Address : ${this.state.walletAddress}`}
         bordered={false}
         style={{ width: '85%' }}
       >
