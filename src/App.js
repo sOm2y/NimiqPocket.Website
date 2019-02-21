@@ -75,13 +75,19 @@ const GPUData ={
   intel: [
     {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
+      version: 'version 1.1.1',
+      link: '/nimiqpocket-gpu-win-1.1.1.zip',
+      logo: require('./assets/if_windows_1296843.png')
+    },
+    {
+      title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
       version: 'version 1.1.0',
       link: '/nimiqpocket-gpu-win-1.1.0.zip',
       logo: require('./assets/if_windows_1296843.png')
     },{
-      title: 'Nimiqpocket GPU miner - Linux',
-      version: 'COMINING SOON',
-      link: '',
+      title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Linux',
+      version: 'version 1.1.1',
+      link: '/nimiqpocket-gpu-linux-1.1.1.zip',
       logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
     }]
 }
@@ -259,8 +265,8 @@ class App extends Component {
       })
 
       const args = {
-        message: 'GPU MINER HAS RELEASED',
-        description: `A community member has release GPU miner suits for Nvidia Graph cards, it charges 2% as dev fee. https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases`,
+        message: 'Nimiqpocket GPU miner Liunx version has released',
+        description: `0% fee for nimiqpocket gpu miner, it supports both AMD & NVIDIA gpu cards`,
         duration: 10,
         icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />
       }
