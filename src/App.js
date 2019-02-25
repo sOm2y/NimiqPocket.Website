@@ -71,7 +71,7 @@ for (let i = 0; i < 20; i += 1) {
     y: Math.floor(Math.random() * 100) + 10
   })
 }
-const GPUData ={
+const GPUData = {
   intel: [
     {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
@@ -79,17 +79,27 @@ const GPUData ={
       link: '/nimiqpocket-gpu-win-1.1.1.zip',
       logo: require('./assets/if_windows_1296843.png')
     },
-    {
-      title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
-      version: 'version 1.1.0',
-      link: '/nimiqpocket-gpu-win-1.1.0.zip',
-      logo: require('./assets/if_windows_1296843.png')
-    },{
+   {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Linux',
       version: 'version 1.1.1',
       link: '/nimiqpocket-gpu-linux-1.1.1.zip',
       logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
-    }]
+    },
+    {
+      title: 'NoncerPro CUDA GPU miner (NVIDIA) - HiveOS',
+      version: 'version 2.0.0',
+      link: 'https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases/download/v2.0.0/noncerpro-cuda-2.0.0.tar.gz',
+      logo: require('./assets/noncerpro.png'),
+      logoStyle: 'noncerpro'
+    },
+    {
+      title: 'NoncerPro OpenCL GPU miner (AMD) - HiveOS',
+      version: 'version 1.0.1',
+      link: 'https://github.com/NoncerPro/noncerpro-nimiq-opencl/releases/download/v1.0.1/noncerpro-opencl-1.0.1.tar.gz',
+      logo: require('./assets/noncerpro.png'),
+      logoStyle: 'noncerpro'
+    }
+  ]
 }
 
 const data = {
@@ -213,7 +223,6 @@ class App extends Component {
       const walletAddress = localStorage.getItem('walletAddress')
       if (walletAddress) {
         this.fetchBalance(walletAddress)
-        this.setState({ walletAddress: walletAddress })
       }
 
       axios.get('https://api.nimiqpocket.com:8080/api/cache/us').then(pool => {
@@ -297,11 +306,33 @@ class App extends Component {
               isHKloading: false
             })
           })
-      }, 1000 * 60 * 1)
+        axios.get('https://api.nimiqpocket.com:8080/api/cache/us').then(pool => {
+          this.setState({
+            usCache: pool.data
+
+            // isUSloading: false
+          })
+        })
+
+        axios.get('https://api.nimiqpocket.com:8080/api/cache/hk').then(pool => {
+          this.setState({
+            hkCache: pool.data
+
+            // isUSloading: false
+          })
+        })
+
+        let walletAddress = localStorage.getItem('walletAddress')
+        if (walletAddress) {
+          this.fetchBalance(walletAddress)
+        }
+
+      }, 1000 * 60 * 2)
     } catch (e) {
       console.log(e)
     }
   }
+
 
   showCurrentVersionData = (e, data) => {
     if (e.target.value === 'linux') {
@@ -318,7 +349,7 @@ class App extends Component {
   showGPUCurrentVersionData = (e, data) => {
     if (e.target.value === 'linux') {
       this.setState({ gpuCurrentListVersion: data.linuxData })
-  
+
     } else if (e.target.value === 'wsl') {
       this.setState({ gpuCurrentListVersion: data.wslData })
     }
@@ -343,10 +374,11 @@ class App extends Component {
         this.setState({
           isBalanceModalOpen: false,
           loadingBalance: false,
-
+          walletAddress:address, activeKey: '2',
           devices: res.data
         })
         localStorage.setItem('walletAddress', address)
+
       })
       .catch(err => {
         console.log(err)
@@ -536,7 +568,6 @@ class App extends Component {
               size="large"
               onSearch={address => {
                 this.fetchBalance(address)
-                this.setState({ activeKey: '2' })
               }}
             />
           </Modal>
@@ -545,7 +576,7 @@ class App extends Component {
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                  
+
                   <PoolStats
                     loading={this.state.isUSloading}
                     title="us.nimiqpocket.com:8444"
@@ -558,7 +589,7 @@ class App extends Component {
                       height={40}
                       data={this.state.usCache.hashrate}
                     />
-                          {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
+                    {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
                   </PoolStats>
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
@@ -569,12 +600,12 @@ class App extends Component {
                     pool={this.state.hk}
                     poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
                   >
-                   <MiniArea
+                    <MiniArea
                       line
                       height={40}
                       data={this.state.hkCache.hashrate}
                     />
-                       {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
+                    {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
                   </PoolStats>
                 </Col>
               </Row>
@@ -595,6 +626,8 @@ class App extends Component {
                   inactiveDevices={this.state.inactiveDevices}
                   payouts={this.state.payouts}
                   loadingBalance={this.state.loadingBalance}
+                  fetchBalance={this.fetchBalance}
+                  walletAddress={this.state.walletAddress}
                 />
               )}
             </TabPane>
@@ -602,12 +635,12 @@ class App extends Component {
               <Blocks />
             </TabPane>
             <TabPane tab={t('connect.title')} key={this.state.panes[3].key}>
-            <Card
-                title="CONNECT WITH NIMIQPOCKET GPU MINER"
+              <Card
+                title="CONNECT WITH NIMIQPOCKET AND NONCERPRO GPU MINER"
                 bordered={false}
                 style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
               >
-         
+
                 <List
                   size="large"
                   dataSource={this.state.gpuCurrentListVersion.intel}
@@ -623,14 +656,14 @@ class App extends Component {
                       ]}
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={item.logo} />}
+                        avatar={<Avatar className={item.logoStyle} src={item.logo} />}
                         title={item.title}
                         description={item.version}
                       />
                     </List.Item>
                   )}
                 />
-                
+
 
               </Card>
               <Card

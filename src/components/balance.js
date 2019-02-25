@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Spin, Tabs, Table } from 'antd';
+import { Card, Icon, Tabs, Table, Badge, Spin } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 import { withTranslation, Trans } from 'react-i18next';
@@ -15,7 +15,9 @@ class Balance extends Component {
   async componentDidMount() {
     const walletAddress = localStorage.getItem('walletAddress')
     if (walletAddress) {
-      this.setState({ walletAddress: walletAddress })
+      this.setState({ walletAddress:walletAddress})
+      localStorage.setItem('walletAddress', walletAddress)
+
     }
   }
   render() {
@@ -68,21 +70,24 @@ class Balance extends Component {
       i18n.changeLanguage(lng);
     }
 
+    const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
     return (
       <Card
-        title={`${t('balance.unpaid')} : ${this.props.userBalance.balance / 100000} NIM | Wallet Address : ${this.state.walletAddress}`}
+        title={this.props.loadingBalance?<Spin indicator={antIcon} />:`${t('balance.unpaid')} : ${this.props.userBalance.balance / 100000} NIM | Wallet Address : ${this.props.walletAddress}`}
         bordered={false}
         style={{ width: '85%' }}
+        extra={this.props.walletAddress&&<a onClick={() => {this.props.fetchBalance(this.props.walletAddress)}}><Icon type="reload" /> refresh</a>}
       >
         <Tabs type="card">
-          <TabPane tab="Online Miners" key="1" >
+          <TabPane tab={<span>Active devices <Badge count={this.props.devices.activeDevices && this.props.devices.activeDevices.length} overflowCount={999} style={{ backgroundColor: '#52c41a',fontSize:12, top:"-2px",left:"3px" }} /></span>} key="1" >
           <Table
             rowKey={record => record.deviceId}
             columns={walletAddressColumn}
             dataSource={this.props.devices.activeDevices}
             loading={this.props.loadingBalance}
           /></TabPane>
-          <TabPane tab="Offline Miners" key="2">
+          <TabPane tab={<span>Inactive devices <Badge count={this.props.inactiveDevices.inactiveDevices && this.props.inactiveDevices.inactiveDevices.length} overflowCount={999} style={{fontSize:12, top:"-2px",left:"3px" }} /></span>} key="2">
           <Table
             rowKey={record => record.deviceId}
             columns={walletAddressColumn}

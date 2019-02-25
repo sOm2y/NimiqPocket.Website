@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+.ant-avatar.ant-avatar-circle.ant-avatar-image.noncerpro img{
+  width: 32px;
+  height: 32px;
+}
 .nimiqpocket {
   background: linear-gradient(90deg, #a553fa, #a557ff);
   box-shadow: inset 0px 0px 90px rgba(0, 0, 0, 0.5);

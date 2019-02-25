@@ -97,7 +97,7 @@ class CustomFooter extends Component {
               xl={10}
               style={{ textAlign: 'right' }}
             >
-              NimiqPocket ©2018 |
+               <a>NimiqPocket ©2019 </a>
               <a href="https://discord.gg/qZZMtrK" target="_blank">
                 <img
                   width="100"

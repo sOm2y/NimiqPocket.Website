@@ -11,7 +11,7 @@
       "hk":"香港",
       "sk":"荷兰",
       "us_w":"美国西部",
-      "hashrate":"哈希率",
+      "hashrate":"算力",
       "numClients": "矿机数量",
       "network":{
         "title":"Nimiq主网",
@@ -42,7 +42,7 @@
       "title":"余额查询",
       "unpaid":"余额",
       "devices":"矿机总数",
-      "total_hashrate":"总哈希率"
+      "total_hashrate":"总算力"
     },
     "blocks":{
       "title": "出块查询"
