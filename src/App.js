@@ -19,8 +19,10 @@ import {
   Form,
   Collapse,
   Select,
-  notification
+  notification,
+  Carousel
 } from 'antd'
+import Slider from 'react-slick'
 import {
   ChartCard,
   Field,
@@ -79,7 +81,7 @@ const GPUData = {
       link: '/nimiqpocket-gpu-win-1.1.1.zip',
       logo: require('./assets/if_windows_1296843.png')
     },
-   {
+    {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Linux',
       version: 'version 1.1.1',
       link: '/nimiqpocket-gpu-linux-1.1.1.zip',
@@ -88,14 +90,16 @@ const GPUData = {
     {
       title: 'NoncerPro CUDA GPU miner (NVIDIA) - HiveOS',
       version: 'version 2.0.0',
-      link: 'https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases/download/v2.0.0/noncerpro-cuda-2.0.0.tar.gz',
+      link:
+        'https://github.com/NoncerPro/noncerpro-nimiq-cuda/releases/download/v2.0.0/noncerpro-cuda-2.0.0.tar.gz',
       logo: require('./assets/noncerpro.png'),
       logoStyle: 'noncerpro'
     },
     {
       title: 'NoncerPro OpenCL GPU miner (AMD) - HiveOS',
       version: 'version 1.0.1',
-      link: 'https://github.com/NoncerPro/noncerpro-nimiq-opencl/releases/download/v1.0.1/noncerpro-opencl-1.0.1.tar.gz',
+      link:
+        'https://github.com/NoncerPro/noncerpro-nimiq-opencl/releases/download/v1.0.1/noncerpro-opencl-1.0.1.tar.gz',
       logo: require('./assets/noncerpro.png'),
       logoStyle: 'noncerpro'
     }
@@ -188,6 +192,28 @@ const panes = [
   { key: '4' },
   { key: '5' }
 ]
+
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'red' }}
+      onClick={onClick}
+    />
+  )
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'green' }}
+      onClick={onClick}
+    />
+  )
+}
 
 class App extends Component {
   constructor() {
@@ -306,33 +332,35 @@ class App extends Component {
               isHKloading: false
             })
           })
-        axios.get('https://api.nimiqpocket.com:8080/api/cache/us').then(pool => {
-          this.setState({
-            usCache: pool.data
+        axios
+          .get('https://api.nimiqpocket.com:8080/api/cache/us')
+          .then(pool => {
+            this.setState({
+              usCache: pool.data
 
-            // isUSloading: false
+              // isUSloading: false
+            })
           })
-        })
 
-        axios.get('https://api.nimiqpocket.com:8080/api/cache/hk').then(pool => {
-          this.setState({
-            hkCache: pool.data
+        axios
+          .get('https://api.nimiqpocket.com:8080/api/cache/hk')
+          .then(pool => {
+            this.setState({
+              hkCache: pool.data
 
-            // isUSloading: false
+              // isUSloading: false
+            })
           })
-        })
 
         let walletAddress = localStorage.getItem('walletAddress')
         if (walletAddress) {
           this.fetchBalance(walletAddress)
         }
-
       }, 1000 * 60 * 2)
     } catch (e) {
       console.log(e)
     }
   }
-
 
   showCurrentVersionData = (e, data) => {
     if (e.target.value === 'linux') {
@@ -349,7 +377,6 @@ class App extends Component {
   showGPUCurrentVersionData = (e, data) => {
     if (e.target.value === 'linux') {
       this.setState({ gpuCurrentListVersion: data.linuxData })
-
     } else if (e.target.value === 'wsl') {
       this.setState({ gpuCurrentListVersion: data.wslData })
     }
@@ -374,11 +401,11 @@ class App extends Component {
         this.setState({
           isBalanceModalOpen: false,
           loadingBalance: false,
-          walletAddress:address, activeKey: '2',
+          walletAddress: address,
+          activeKey: '2',
           devices: res.data
         })
         localStorage.setItem('walletAddress', address)
-
       })
       .catch(err => {
         console.log(err)
@@ -482,6 +509,19 @@ class App extends Component {
     const changeLanguage = lng => {
       i18n.changeLanguage(lng)
     }
+
+    const settings = {
+      className: 'center',
+      centerMode: true,
+      infinite: false,
+      centerPadding: '60px',
+      slidesToShow: 2,
+      speed: 500,
+      // initialSlide: 2
+      // nextArrow: <SampleNextArrow />,
+      // prevArrow: <SamplePrevArrow />
+    }
+
     return (
       <Layout className="layout">
         <HeaderStats hk={this.state.hk} />
@@ -575,7 +615,8 @@ class App extends Component {
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
-                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                <Carousel {...settings}>
+                  {/* <Col xs={24} sm={12} md={12} lg={12} xl={12}> */}
 
                   <PoolStats
                     loading={this.state.isUSloading}
@@ -591,8 +632,8 @@ class App extends Component {
                     />
                     {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
                   </PoolStats>
-                </Col>
-                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                  {/* </Col>
+                <Col xs={24} sm={12} md={12} lg={12} xl={12}> */}
                   <PoolStats
                     loading={this.state.isHKloading}
                     title="hk.nimiqpocket.com:8444"
@@ -607,7 +648,22 @@ class App extends Component {
                     />
                     {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
                   </PoolStats>
-                </Col>
+                  <PoolStats
+                    loading={this.state.isHKloading}
+                    title="fr.nimiqpocket.com:8444"
+                    flag={require('./assets/if_CN_167778.png')}
+                    pool={this.state.hk}
+                    poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
+                  >
+                    <MiniArea
+                      line
+                      height={40}
+                      data={this.state.hkCache.hashrate}
+                    />
+                    {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
+                  </PoolStats>
+                  {/* </Col> */}
+                </Carousel>
               </Row>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
@@ -640,7 +696,6 @@ class App extends Component {
                 bordered={false}
                 style={{ maxWidth: 1000, width: '100%', marginTop: 40 }}
               >
-
                 <List
                   size="large"
                   dataSource={this.state.gpuCurrentListVersion.intel}
@@ -656,15 +711,15 @@ class App extends Component {
                       ]}
                     >
                       <List.Item.Meta
-                        avatar={<Avatar className={item.logoStyle} src={item.logo} />}
+                        avatar={
+                          <Avatar className={item.logoStyle} src={item.logo} />
+                        }
                         title={item.title}
                         description={item.version}
                       />
                     </List.Item>
                   )}
                 />
-
-
               </Card>
               <Card
                 title="CONNECT WITH NIMIQPOCKET CPU MINER"

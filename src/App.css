@@ -1,12 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 
-.nimiqpocket{
+.nimiqpocket {
   width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.ant-avatar.ant-avatar-circle.ant-avatar-image.noncerpro img{
+.ant-avatar.ant-avatar-circle.ant-avatar-image.noncerpro img {
   width: 32px;
   height: 32px;
 }
@@ -15,6 +15,14 @@
   box-shadow: inset 0px 0px 90px rgba(0, 0, 0, 0.5);
   margin: 0px;
   padding: 0px;
+}
+
+.ant-row .ant-carousel .slick-dots li.slick-active button {
+  opacity: 1;
+}
+.ant-row .ant-carousel .slick-dots li button {
+  background: #a553fa;
+  opacity: 0.3;
 }
 
 .demo {
@@ -45,57 +53,57 @@
 @-webkit-keyframes spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
 @keyframes spin {
   from {
     -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
     -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 .circle:nth-of-type(0) {
   -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
+  transform: rotate(0deg);
 }
 .circle:nth-of-type(0) .inner {
   -webkit-animation: spin 2s infinite linear;
-          animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
 }
 
 .circle:nth-of-type(1) {
   -webkit-transform: rotate(70deg);
-          transform: rotate(70deg);
+  transform: rotate(70deg);
 }
 .circle:nth-of-type(1) .inner {
   -webkit-animation: spin 2s infinite linear;
-          animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
 }
 
 .circle:nth-of-type(2) {
   -webkit-transform: rotate(140deg);
-          transform: rotate(140deg);
+  transform: rotate(140deg);
 }
 .circle:nth-of-type(2) .inner {
   -webkit-animation: spin 2s infinite linear;
-          animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
 }
 
 .demo {
   -webkit-animation: spin 5s infinite linear;
-          animation: spin 5s infinite linear;
+  animation: spin 5s infinite linear;
 }
 
-.nimiqpocket{
+.nimiqpocket {
   position: absolute;
   text-align: center;
   background: #a553fe;
@@ -181,7 +189,7 @@ p.header-payout {
   height: 60px;
   color: var(--success-color);
 }
-.ant-collapse > .ant-collapse-item > .ant-collapse-header{
+.ant-collapse > .ant-collapse-item > .ant-collapse-header {
   background: var(--primary-background-toright);
   color: white;
 }
@@ -207,8 +215,8 @@ div.ant-tabs-tab-active.ant-tabs-tab {
 .ant-tabs.ant-tabs-top.ant-tabs-line {
   padding-bottom: 30px;
 }
-.ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab{
-  color: #a553fe;  
+.ant-tabs.ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+  color: #a553fe;
 }
 .ant-tabs-bar {
   max-width: 1000px;
@@ -253,14 +261,14 @@ div.ant-tabs-tab-active.ant-tabs-tab {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
     0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
-.ant-drawer-body .ant-select.ant-select-enabled{
+.ant-drawer-body .ant-select.ant-select-enabled {
   width: 100%;
 }
-.ant-drawer-body .ant-btn.ant-btn-circle.start{
-  width: 100px ;
-  height: 100px; 
-  top: 70px; 
-  position: relative; 
+.ant-drawer-body .ant-btn.ant-btn-circle.start {
+  width: 100px;
+  height: 100px;
+  top: 70px;
+  position: relative;
   background-color: var(--primary-background-toright);
 }
 
@@ -324,13 +332,9 @@ div.ant-tabs-tab-active.ant-tabs-tab {
 }
 @media only screen and (max-width: 600px) {
   .wallet-search {
-
     top: 0px;
-
   }
   .web-miner {
-
     top: 0px;
-
   }
 }
