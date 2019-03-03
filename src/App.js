@@ -77,14 +77,14 @@ const GPUData = {
   intel: [
     {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
-      version: 'version 1.1.1',
-      link: '/nimiqpocket-gpu-win-1.1.1.zip',
+      version: 'version 1.1.2',
+      link: '/nimiqpocket-gpu-win-1.1.2.zip',
       logo: require('./assets/if_windows_1296843.png')
     },
     {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Linux',
-      version: 'version 1.1.1',
-      link: '/nimiqpocket-gpu-linux-1.1.1.zip',
+      version: 'version 1.1.2',
+      link: '/nimiqpocket-gpu-linux-1.1.2.zip',
       logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
     },
     {
@@ -220,13 +220,14 @@ class App extends Component {
     super()
     this.state = {
       isUSloading: true,
-      isKRloading: true,
+      isFRloading: true,
       isHKloading: true,
       usCache: {},
       hkCache: {},
+      frCache: {},
       pool: {},
       hk: {},
-      eu: {},
+      fr: {},
       us: {},
       poolStats: {},
       currentListVersion: [],
@@ -267,6 +268,14 @@ class App extends Component {
         })
       })
 
+      axios.get('https://api.nimiqpocket.com:8080/api/cache/fr').then(pool => {
+        this.setState({
+          frCache: pool.data
+
+          // isUSloading: false
+        })
+      })
+
       // axios.get('https://api.nimiqpocket.com:8080/api/poolstats').then(pool => {
       //   this.setState({
       //     pool: pool.data,
@@ -291,6 +300,16 @@ class App extends Component {
             hk: hk.data,
 
             isHKloading: false
+          })
+        })
+
+      axios
+        .get('https://api.nimiqpocket.com:8080/api/poolstats/fr')
+        .then(fr => {
+          this.setState({
+            fr: fr.data,
+
+            isFRloading: false
           })
         })
 
@@ -332,6 +351,16 @@ class App extends Component {
               isHKloading: false
             })
           })
+
+          axios
+          .get('https://api.nimiqpocket.com:8080/api/poolstats/fr')
+          .then(fr => {
+            this.setState({
+              fr: fr.data,
+  
+              isFRloading: false
+            })
+          })
         axios
           .get('https://api.nimiqpocket.com:8080/api/cache/us')
           .then(pool => {
@@ -351,6 +380,14 @@ class App extends Component {
               // isUSloading: false
             })
           })
+
+        axios.get('https://api.nimiqpocket.com:8080/api/cache/fr').then(pool => {
+          this.setState({
+            frCache: pool.data
+
+            // isUSloading: false
+          })
+        })
 
         let walletAddress = localStorage.getItem('walletAddress')
         if (walletAddress) {
@@ -514,8 +551,8 @@ class App extends Component {
       className: 'center',
       centerMode: true,
       infinite: false,
-      centerPadding: '60px',
-      slidesToShow: 2,
+      centerPadding: '300px',
+      slidesToShow: 1,
       speed: 500,
       // initialSlide: 2
       // nextArrow: <SampleNextArrow />,
@@ -615,8 +652,8 @@ class App extends Component {
           <Tabs activeKey={this.state.activeKey} onChange={this.onTabChange}>
             <TabPane tab={t('dashboard.title')} key={this.state.panes[0].key}>
               <Row>
-                <Carousel {...settings}>
-                  {/* <Col xs={24} sm={12} md={12} lg={12} xl={12}> */}
+                {/* <Carousel {...settings}> */}
+                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
 
                   <PoolStats
                     loading={this.state.isUSloading}
@@ -632,8 +669,30 @@ class App extends Component {
                     />
                     {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
                   </PoolStats>
-                  {/* </Col>
-                <Col xs={24} sm={12} md={12} lg={12} xl={12}> */}
+                </Col>
+                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+
+                  <PoolStats
+                    loading={this.state.isFRloading}
+                    title="fr.nimiqpocket.com:8444"
+                    flag={require('./assets/france.png')}
+                    pool={this.state.fr}
+                    poweredBy={require('./assets/microsoft-azure-500x500.png')}
+                  >
+                    <MiniArea
+                      line
+                      height={40}
+                      data={this.state.frCache.hashrate}
+                    />
+                    {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
+                  </PoolStats>
+
+                </Col>
+
+                {/* </Carousel> */}
+              </Row>
+              <Row>
+                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                   <PoolStats
                     loading={this.state.isHKloading}
                     title="hk.nimiqpocket.com:8444"
@@ -648,25 +707,11 @@ class App extends Component {
                     />
                     {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
                   </PoolStats>
-                  <PoolStats
-                    loading={this.state.isHKloading}
-                    title="fr.nimiqpocket.com:8444"
-                    flag={require('./assets/if_CN_167778.png')}
-                    pool={this.state.hk}
-                    poweredBy={require('./assets/Alibaba-Cloud---resized-v2.png')}
-                  >
-                    <MiniArea
-                      line
-                      height={40}
-                      data={this.state.hkCache.hashrate}
-                    />
-                    {/* <MiniBar  height={40}  data={this.state.cachePool.client} /> */}
-                  </PoolStats>
-                  {/* </Col> */}
-                </Carousel>
+                </Col>
               </Row>
               <Row>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+
                   <NetworkStats />
                 </Col>
                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
