@@ -15,24 +15,12 @@
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-1.1.16.tgz#ac6426216934e3f4bc108f2f48f92ed66789235e"
   integrity sha512-0zNVP5JYBJkfMi9HotN6QBQjF3SFmUlumJNJXZIH+pZWp/5EbrCczzlG3YTmBWoyRHAsuOGIjSFIy8v/76DTPg==
 
-"@antv/adjust@~0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@antv/adjust/-/adjust-0.0.6.tgz#16db3000dd315607acda8f6968caf7b58c36f3a8"
-  dependencies:
-    "@antv/util" "~1.0.11"
-
 "@antv/adjust@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@antv/adjust/-/adjust-0.1.0.tgz#c4bce8ba0aef7cd5b3bf271f75f434c07bd215a0"
   integrity sha512-69RssVgTGSeyjGTeQ/DeWHG94vUphFQKwh5M47mBNcBqFtRadE+y1DHsdP+EHLsFYynya5hKpWNQxZx5aTanbw==
   dependencies:
     "@antv/util" "~1.3.1"
-
-"@antv/attr@~0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@antv/attr/-/attr-0.0.6.tgz#5b3886512cd290c1bd179e9613f3197243dc0557"
-  dependencies:
-    "@antv/util" "~1.0.11"
 
 "@antv/attr@~0.1.2":
   version "0.1.2"
@@ -108,19 +96,6 @@
   resolved "https://registry.yarnpkg.com/@antv/g2-plugin-slider/-/g2-plugin-slider-2.1.0.tgz#7f2f5879d33dcfb14dd2b955092ca198ad9152b9"
   integrity sha512-VbCUK+WRFB1fW7dx3d/AixgLuXFuhfA7n9Ex08KQBM9QIgpWJICsBUdFMHdfRgwzXHw+eCkCNB2gTVPoyesquA==
 
-"@antv/g2@3.2.8-beta.5":
-  version "3.2.8-beta.5"
-  resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-3.2.8-beta.5.tgz#63e2f6507a75a3130e8fb82089621dce26a8d88a"
-  dependencies:
-    "@antv/adjust" "~0.0.6"
-    "@antv/attr" "~0.0.6"
-    "@antv/g" "~3.1.1"
-    "@antv/interaction" "~0.1.5"
-    "@antv/scale" "~0.0.8"
-    "@antv/util" "~1.0.12"
-    venn.js "~0.2.20"
-    wolfy87-eventemitter "~5.1.0"
-
 "@antv/g2@3.4.9":
   version "3.4.9"
   resolved "https://registry.yarnpkg.com/@antv/g2/-/g2-3.4.9.tgz#8e8d090372e9aa8481ec902dc93dbcdcb5899232"
@@ -134,28 +109,6 @@
     "@antv/scale" "~0.1.0"
     "@antv/util" "~1.3.1"
     venn.js "~0.2.20"
-    wolfy87-eventemitter "~5.1.0"
-
-"@antv/g@3.1.0-beta.6":
-  version "3.1.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@antv/g/-/g-3.1.0-beta.6.tgz#d9e2f53e288b6fb4dcb2787bba8d6d5527664484"
-  dependencies:
-    "@antv/gl-matrix" "~2.7.1"
-    "@antv/util" "~1.0.11"
-    d3-ease "~1.0.3"
-    d3-interpolate "~1.1.5"
-    d3-timer "~1.0.6"
-    wolfy87-eventemitter "~5.1.0"
-
-"@antv/g@~3.1.1":
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/@antv/g/-/g-3.1.2.tgz#08b958782f5aeb96f0f49518176a2edcf18980eb"
-  dependencies:
-    "@antv/gl-matrix" "~2.7.1"
-    "@antv/util" "~1.0.11"
-    d3-ease "~1.0.3"
-    d3-interpolate "~1.1.5"
-    d3-timer "~1.0.6"
     wolfy87-eventemitter "~5.1.0"
 
 "@antv/g@~3.3.5":
@@ -185,20 +138,6 @@
   dependencies:
     "@antv/util" "~1.3.1"
 
-"@antv/interaction@~0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@antv/interaction/-/interaction-0.1.5.tgz#6587cf7bdc6820826791dcb060baf61d2fdce77e"
-  dependencies:
-    "@antv/g" "3.1.0-beta.6"
-    "@antv/util" "~1.0.11"
-
-"@antv/scale@~0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@antv/scale/-/scale-0.0.8.tgz#abadec0e432c657089c7b17ea019cddc267b4f84"
-  dependencies:
-    "@antv/util" "~1.0.11"
-    fecha "~2.3.3"
-
 "@antv/scale@~0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@antv/scale/-/scale-0.1.0.tgz#2b5459a100f97aac04781376d53904ccab18aab7"
@@ -206,10 +145,6 @@
   dependencies:
     "@antv/util" "~1.3.1"
     fecha "~2.3.3"
-
-"@antv/util@~1.0.11", "@antv/util@~1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@antv/util/-/util-1.0.12.tgz#b55e921f30f1c8410f3e24a2d889e82568c3df38"
 
 "@antv/util@~1.3.1":
   version "1.3.1"
@@ -2118,16 +2053,7 @@ bizcharts-plugin-slider@^2.1.1-beta.1:
   dependencies:
     "@antv/g2-plugin-slider" "2.1.0"
 
-bizcharts@^3.2.3-beta.2:
-  version "3.2.3-beta.2"
-  resolved "https://registry.yarnpkg.com/bizcharts/-/bizcharts-3.2.3-beta.2.tgz#24637a7311d23b913f0fdb7335f5dfc740a07df7"
-  dependencies:
-    "@antv/g2" "3.2.8-beta.5"
-    invariant "^2.2.2"
-    prop-types "^15.6.0"
-    warning "^3.0.0"
-
-bizcharts@^3.4.2:
+bizcharts@^3.4.2, bizcharts@^3.4.3:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/bizcharts/-/bizcharts-3.4.3.tgz#26be091dfcd078d73eb8873eb51f81329f1065ee"
   integrity sha512-7PvGli8oTreeGUMcTELb0ohaPZ+qHXBk7jgrKtXlr9BeZpgTjvIvT9eGSxl1eLyEuDpCBlTU2D3aMtRSLp9aow==
