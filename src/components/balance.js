@@ -4,21 +4,10 @@ import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
 import {
-  G2,
-  Chart,
-  Geom,
-  Axis,
-  Tooltip,
-  Coord,
-  Label,
+  ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   Legend,
-  View,
-  Guide,
-  Shape,
-  Facet,
-  Util
-} from "bizcharts";
-import DataSet from "@antv/data-set";
+} from 'recharts';
+
 import { withTranslation, Trans } from 'react-i18next';
 import { humanHashes } from '../Helper/statsFormat';
 const TabPane = Tabs.TabPane;
@@ -26,15 +15,25 @@ class Balance extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      walletAddress: ''
+      walletAddress: '',
+      payouts:{payouts:[]}
     };
   }
-  async componentDidMount() {
+  componentDidMount() {
     const walletAddress = localStorage.getItem('walletAddress')
     if (walletAddress) {
       this.setState({ walletAddress: walletAddress })
       localStorage.setItem('walletAddress', walletAddress)
-
+      axios
+      .get(`https://api.nimiqpocket.com:8080/api/payout/day/${walletAddress}`)
+      .then(res => {
+        this.setState({
+          payouts: res.data
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
   render() {
@@ -89,47 +88,7 @@ class Balance extends Component {
 
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-    const { DataView } = DataSet;
-    const data = [
-      {
-        item: "事例一",
-        count: 40
-      },
-      {
-        item: "事例二",
-        count: 21
-      },
-      {
-        item: "事例三",
-        count: 17
-      },
-      {
-        item: "事例四",
-        count: 13
-      },
-      {
-        item: "事例五",
-        count: 9
-      }
-    ];
-    const dv = new DataView();
-    dv.source(data).transform({
-      type: "percent",
-      field: "count",
-      dimension: "item",
-      as: "percent"
-    });
-    const cols = {
-      percent: {
-        formatter: val => {
-          val = val * 100 + "%";
-          return val;
-        }
-      }
-    };
 
-    let groupedResults = _.groupBy(this.props.payouts.payouts, (payout) => moment(payout['datetime'], 'DD/MM/YYYY').startOf('isoWeek'));
-    
     return (
       <Card
         title={this.props.loadingBalance ? <Spin indicator={antIcon} /> : `${t('balance.unpaid')} : ${this.props.userBalance.balance / 100000} NIM | Wallet Address : ${this.props.walletAddress}`}
@@ -160,66 +119,25 @@ class Balance extends Component {
               loading={this.props.loadingBalance}
             />
           </TabPane>
-          <TabPane tab="Statistics" key="4">
+          <TabPane tab={<span>Statistics <Badge count="new" overflowCount={999} style={{ fontSize: 10, top: "-3px", left: "3px" }} /></span>}  key="4">
             <Row>
-              <Col span={12}>
-                <Chart
-                  height={window.innerHeight}
-                  data={dv}
-                  scale={cols}
-                  forceFit
+              <ComposedChart
+                  width={800}
+                  height={400}
+                  data={this.state.payouts.payouts}
+                  margin={{
+                    top: 20, right: 20, bottom: 20, left: 20,
+                  }}
                 >
-                  <Coord type="theta" radius={0.75} />
-                  <Axis name="percent" />
-                  <Legend
-                    position="right"
-                    offsetY={-window.innerHeight / 2 + 120}
-                    offsetX={-100}
-                  />
-                  <Tooltip
-                    showTitle={false}
-                    itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
-                  />
-                  <Geom
-                    type="intervalStack"
-                    position="percent"
-                    color="item"
-                    tooltip={[
-                      "item*percent",
-                      (item, percent) => {
-                        percent = percent * 100 + "%";
-                        return {
-                          name: item,
-                          value: percent
-                        };
-                      }
-                    ]}
-                    style={{
-                      lineWidth: 1,
-                      stroke: "#fff"
-                    }}
-                  >
-                    <Label
-                      content="percent"
-                      formatter={(val, item) => {
-                        return item.point.item + ": " + val;
-                      }}
-                    />
-                  </Geom>
-                </Chart>
-              </Col>
-              <Col span={12}>
-                <Chart height={400} data={groupedResults} scale={cols} forceFit>
-                  <Axis name="datetime" />
-                  <Axis name="amount" />
-                  <Tooltip
-                    crosshairs={{
-                      type: "y"
-                    }}
-                  />
-                  <Geom type="interval" position="datetime*amount" />
-                </Chart>
-              </Col>
+                  <CartesianGrid stroke="#f5f5f5" />
+                  <XAxis dataKey="datetime" />
+                  <YAxis yAxisId="left" />
+                  <YAxis yAxisId="right" orientation="right" />
+                  <Tooltip />
+                  <Legend />
+                  <Bar name="Transactions per day" yAxisId="left" dataKey="transaction_total" barSize={20} fill="#a557ff" />
+                  <Line name="Amounts per day" yAxisId="right" type="monotone" dataKey="amount_total" stroke="#ff7300" />
+                </ComposedChart>
             </Row>
           </TabPane>
 

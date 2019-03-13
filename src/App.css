@@ -24,7 +24,9 @@
   background: #a553fa;
   opacity: 0.3;
 }
-
+.ant-row .recharts-wrapper{
+  margin: 0 auto;
+}
 .demo {
   width: 100px;
   height: 102px;
