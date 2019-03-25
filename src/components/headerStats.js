@@ -101,7 +101,7 @@ class HeaderStats extends Component {
           )}
           {!this.state.isHeaderLoading && (
             <p>
-              {t('header.fee')} <span> 1 </span>% |{' '}
+              {t('header.fee')} <span> 1.5 </span>% |{' '}
               {t('header.found')}{' '}
               <span>{this.state.poolStats.totalBlocksMined}</span>
               {t('header.block')}
