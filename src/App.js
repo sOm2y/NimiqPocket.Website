@@ -77,14 +77,14 @@ const GPUData = {
   intel: [
     {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Windows',
-      version: 'version 1.1.2',
-      link: '/nimiqpocket-gpu-win-1.1.2.zip',
+      version: 'version 1.2.0',
+      link: '/nimiqpocket-gpu-win-1.2.0.zip',
       logo: require('./assets/if_windows_1296843.png')
     },
     {
       title: 'Nimiqpocket GPU miner (AMD & NVIDIA) - Linux',
-      version: 'version 1.1.2',
-      link: '/nimiqpocket-gpu-linux-1.1.2.zip',
+      version: 'version 1.2.0',
+      link: '/nimiqpocket-gpu-linux-1.2.0.tar.xz',
       logo: require('./assets/if_linux-server-system-platform-os-computer-penguin_652577.png')
     },
     {
